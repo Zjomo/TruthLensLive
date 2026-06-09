@@ -1,0 +1,647 @@
+2025-08-17 23:50:02,118 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-17 23:50:05,393 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-17 23:50:05,399 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-17 23:53:26,127 - __main__ - INFO - [session-67dc081a] Received verification request at 2025-08-17T15:53:26.127553
+2025-08-17 23:53:26,128 - __main__ - INFO - [session-67dc081a] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-17 23:53:26,129 - __main__ - INFO - [session-67dc081a] Processing 内容字符数: 162 characters
+2025-08-17 23:53:26,416 - __main__ - INFO - [session-67dc081a] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.69}
+2025-08-17 23:53:26,431 - __main__ - INFO - [session-67dc081a] 提取实体: ...
+2025-08-17 23:53:26,431 - __main__ - WARNING - [session-67dc081a] 未找到实体
+2025-08-17 23:53:26,431 - __main__ - INFO - [session-67dc081a] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-08-17 23:54:15,996 - __main__ - ERROR - 未预期报错: Search failed: Timeout connecting to https://baresearch.org/
+2025-08-17 23:54:16,000 - __main__ - ERROR - Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 208, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x000002162F7203D0>, 'Connection to baresearch.org timed out. (connect timeout=15)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002162F7203D0>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 166, in _make_search_request
+    response = self.session.get(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002162F7203D0>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 215, in search
+    response = self._make_search_request(target_instance, query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 398, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 451, in result
+    return self.__get_result()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 403, in __get_result
+    raise self._exception
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 195, in _make_search_request
+    raise NetworkError(f"Timeout connecting to {instance.url}")
+pyserxng.exceptions.NetworkError: Timeout connecting to https://baresearch.org/
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 453, in verify_news
+    found_in_reliable_sources = True
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 294, in Search_Engines_Link
+    @app.get("/test-domain")
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 307, in search_news
+    return self.search(query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 277, in search
+    raise SearchError(f"Search failed: {e}")
+pyserxng.exceptions.SearchError: Search failed: Timeout connecting to https://baresearch.org/
+
+2025-08-17 23:54:23,188 - __main__ - INFO - [session-c70b1e7c] Received verification request at 2025-08-17T15:54:23.187135
+2025-08-17 23:54:23,188 - __main__ - INFO - [session-c70b1e7c] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-17 23:54:23,189 - __main__ - INFO - [session-c70b1e7c] Processing 内容字符数: 162 characters
+2025-08-17 23:54:23,262 - __main__ - INFO - [session-c70b1e7c] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.69}
+2025-08-17 23:54:23,265 - __main__ - INFO - [session-c70b1e7c] 提取实体: ...
+2025-08-17 23:54:23,265 - __main__ - WARNING - [session-c70b1e7c] 未找到实体
+2025-08-17 23:54:23,265 - __main__ - INFO - [session-c70b1e7c] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-08-17 23:54:58,577 - __main__ - INFO - [session-c70b1e7c] SearchAPI 返回 0 个结果
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 发现可靠来源: False
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 直接来源验证: False
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 可能匹配: False
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 搜索结果数量: 0
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 匹配可靠来源: []
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] 来源置信度: 10 (无搜索结果)
+2025-08-17 23:54:58,578 - __main__ - INFO - [session-c70b1e7c] LLM 分析初始化
+2025-08-17 23:55:08,041 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-17 23:55:11,569 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-17 23:55:11,574 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-17 23:55:22,239 - __main__ - INFO - [session-f8a375a9] Received verification request at 2025-08-17T15:55:22.239584
+2025-08-17 23:55:22,239 - __main__ - INFO - [session-f8a375a9] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-17 23:55:22,239 - __main__ - INFO - [session-f8a375a9] Processing 内容字符数: 162 characters
+2025-08-17 23:55:22,556 - __main__ - INFO - 这里👇
+2025-08-17 23:55:22,557 - __main__ - INFO - headline='震惊！马斯克承认身份：“我是外星人，早在火星生活过”' content='在近日举行的一次私人科技圆桌会议中，特斯拉和SpaceX创始人埃隆·马斯克突然表示：“我是外星人，来自火星。”这一言论令在场嘉宾惊愕不已。据所谓“内部消息人士”透露，马斯克早年曾多次前往某个“政府隐藏的火星基地”，并拥有与外星文明接触的经验。更令人震惊的是，他表示“推动星舰计划是为了回家”。目前，该消息尚未被主流媒体证实。' source_url=''
+2025-08-17 23:55:22,557 - __main__ - INFO - [session-f8a375a9] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.69}
+2025-08-17 23:55:22,565 - __main__ - INFO - [session-f8a375a9] 提取实体: ...
+2025-08-17 23:55:22,565 - __main__ - WARNING - [session-f8a375a9] 未找到实体
+2025-08-17 23:55:22,565 - __main__ - INFO - [session-f8a375a9] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-08-17 23:55:25,242 - __main__ - INFO - [session-f8a375a9] SearchAPI 返回 1 个结果
+2025-08-17 23:55:25,242 - __main__ - INFO - [session-f8a375a9] 发现可靠来源: False
+2025-08-17 23:55:25,242 - __main__ - INFO - [session-f8a375a9] 直接来源验证: False
+2025-08-17 23:55:25,242 - __main__ - INFO - [session-f8a375a9] 可能匹配: False
+2025-08-17 23:55:25,242 - __main__ - INFO - [session-f8a375a9] 搜索结果数量: 1
+2025-08-17 23:55:25,243 - __main__ - INFO - [session-f8a375a9] 匹配可靠来源: []
+2025-08-17 23:55:25,243 - __main__ - INFO - [session-f8a375a9] 来源置信度: 30 (无可靠匹配)
+2025-08-17 23:55:25,243 - __main__ - INFO - [session-f8a375a9] LLM 分析初始化
+2025-08-17 23:55:32,413 - __main__ - INFO - [session-f8a375a9] LLM 分析完成
+2025-08-17 23:55:32,418 - __main__ - INFO - [session-f8a375a9] 内容标记为：疑似为假
+2025-08-17 23:58:20,798 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-17 23:58:24,346 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-17 23:58:24,351 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-17 23:58:32,968 - __main__ - INFO - [session-760b758a] Received verification request at 2025-08-17T15:58:32.968979
+2025-08-17 23:58:32,968 - __main__ - INFO - [session-760b758a] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-17 23:58:32,969 - __main__ - INFO - [session-760b758a] Processing 内容字符数: 162 characters
+2025-08-17 23:58:38,278 - __main__ - INFO - 这里👇
+2025-08-17 23:58:38,278 - __main__ - INFO - At a recent private technology roundtable meeting, Tesla and SpaceX founder Elon Musk suddenly stated, "I am an alien from Mars." This statement shocked the guests present. According to so-called "insider sources," Musk had reportedly visited a "government-hidden Mars base" multiple times in his early years and had experience of contact with extraterrestrial civilizations. Even more astonishingly, he said that "the Starship program is to go home." Currently, this message has not been confirmed by mainstream media.
+2025-08-17 23:58:38,278 - __main__ - INFO - [session-760b758a] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.94}
+2025-08-17 23:58:38,283 - __main__ - INFO - [session-760b758a] 提取实体: ...
+2025-08-17 23:58:38,283 - __main__ - WARNING - [session-760b758a] 未找到实体
+2025-08-17 23:58:38,283 - __main__ - INFO - [session-760b758a] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] SearchAPI 返回 1 个结果
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 发现可靠来源: False
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 直接来源验证: False
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 可能匹配: False
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 搜索结果数量: 1
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 匹配可靠来源: []
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] 来源置信度: 30 (无可靠匹配)
+2025-08-17 23:58:41,396 - __main__ - INFO - [session-760b758a] LLM 分析初始化
+2025-08-17 23:58:50,632 - __main__ - INFO - [session-760b758a] LLM 分析完成
+2025-08-17 23:58:50,632 - __main__ - INFO - [session-760b758a] 内容标记为：疑似为假
+2025-08-18 01:15:48,527 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-18 01:15:55,313 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-18 01:15:55,321 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-18 16:53:35,724 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-18 16:53:42,644 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-18 16:53:42,660 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-18 16:57:19,413 - __main__ - INFO - [session-44a2c286] Received verification request at 2025-08-18T08:57:19.413125
+2025-08-18 16:57:19,413 - __main__ - INFO - [session-44a2c286] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-18 16:57:19,414 - __main__ - INFO - [session-44a2c286] Processing 内容字符数: 274 characters
+2025-08-18 16:57:24,192 - __main__ - INFO - 这里👇
+2025-08-18 16:57:24,193 - __main__ - INFO - On May 30, 2025, at a closed-door meeting for SpaceX employees, Tesla and SpaceX CEO Elon Musk shocked everyone by stating, "In fact, I am not an Earthling, but a representative from Mars. We have been observing the development of human society." According to an anonymous employee on the scene, Musk showed a video purported to be from a "Mars mothership" and announced that the existence of Martian civilization would be fully disclosed by 2030. The news quickly sparked heated discussion on social media platforms, with the Twitter topic #ElonIsAlien topping the trending list. Some experts questioned its authenticity, calling it "a possible high-level public relations stunt," while conspiracy theorists said "this confirms decades of speculation about Musk's identity." So far, NASA, the Pentagon, and the United Nations have not made an official response to the matter.
+2025-08-18 16:57:24,193 - __main__ - INFO - [session-44a2c286] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.92}
+2025-08-18 16:57:24,206 - __main__ - INFO - [session-44a2c286] 提取实体: 2025年5月30日，在一次SpaceX内部员工闭门会议上，特斯拉和SpaceX首席执行官埃隆·马斯克震惊四座地表示：“其实我并不是地球人，而是来自火星的代表。我们一直在观察人类社会的发展。”据现场匿...
+2025-08-18 16:57:24,207 - __main__ - INFO - [session-44a2c286] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 2025年5月30日，在一次SpaceX内部员...
+2025-08-18 16:57:43,164 - __main__ - INFO - [session-44a2c286] SearchAPI 返回 1 个结果
+2025-08-18 16:57:43,164 - __main__ - INFO - [session-44a2c286] 发现可靠来源: False
+2025-08-18 16:57:43,164 - __main__ - INFO - [session-44a2c286] 直接来源验证: False
+2025-08-18 16:57:43,165 - __main__ - INFO - [session-44a2c286] 可能匹配: False
+2025-08-18 16:57:43,165 - __main__ - INFO - [session-44a2c286] 搜索结果数量: 1
+2025-08-18 16:57:43,165 - __main__ - INFO - [session-44a2c286] 匹配可靠来源: []
+2025-08-18 16:57:43,165 - __main__ - INFO - [session-44a2c286] 来源置信度: 30 (无可靠匹配)
+2025-08-18 16:57:43,165 - __main__ - INFO - [session-44a2c286] LLM 分析初始化
+2025-08-18 16:57:54,514 - __main__ - INFO - [session-44a2c286] LLM 分析完成
+2025-08-18 16:57:54,514 - __main__ - INFO - [session-44a2c286] 内容标记为：疑似为假
+2025-08-19 21:26:43,567 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:26:48,278 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:26:48,285 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 21:27:56,497 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:28:16,680 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:28:21,201 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:28:21,213 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 21:32:28,100 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:32:33,108 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:32:33,114 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 21:34:25,714 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:34:30,269 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:34:30,275 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 21:48:42,860 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:48:47,302 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:57:48,580 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 21:57:52,858 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 21:57:52,863 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 22:33:17,500 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 22:33:23,524 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 22:33:23,534 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 22:53:39,552 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 22:53:45,317 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 22:53:45,331 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 23:00:23,345 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 23:00:26,444 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 23:00:26,449 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 23:04:48,098 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 23:04:50,963 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 23:04:50,968 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 23:05:57,275 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-19 23:06:02,650 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-19 23:06:02,658 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-19 23:06:34,558 - __main__ - INFO - [session-7e2159af] Received verification request at 2025-08-19T15:06:34.558025
+2025-08-19 23:06:34,559 - __main__ - INFO - [session-7e2159af] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-19 23:06:34,559 - __main__ - INFO - [session-7e2159af] Processing 内容字符数: 274 characters
+2025-08-19 23:06:41,327 - __main__ - INFO - 这里👇
+2025-08-19 23:06:41,327 - __main__ - INFO - On May 30, 2025, at a closed-door meeting for SpaceX employees, Tesla and SpaceX CEO Elon Musk shocked everyone by saying, "In fact, I am not an Earthling, but a representative from Mars. We have been observing the development of human society." According to an anonymous employee on the scene, Musk showed a video that is said to come from a "Mars mothership" and announced that the existence of the Martian civilization would be fully disclosed before 2030. The news quickly sparked a heated discussion on social media platforms, with the Twitter topic #ElonIsAlien topping the trending list. Some experts questioned its authenticity, calling it "a possible high-level public relations stunt," but conspiracy theorists said "this confirms decades of speculation about Musk's identity." So far, NASA, the Pentagon, and the United Nations have not made an official response to the matter.
+2025-08-19 23:06:41,327 - __main__ - INFO - [session-7e2159af] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.93}
+2025-08-19 23:06:41,342 - __main__ - INFO - [session-7e2159af] 提取实体: 2025年5月30日，在一次SpaceX内部员工闭门会议上，特斯拉和SpaceX首席执行官埃隆·马斯克震惊四座地表示：“其实我并不是地球人，而是来自火星的代表。我们一直在观察人类社会的发展。”据现场匿...
+2025-08-19 23:06:41,342 - __main__ - INFO - [session-7e2159af] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 2025年5月30日，在一次SpaceX内部员...
+2025-08-19 23:07:15,582 - __main__ - ERROR - 未预期报错: Search failed: Request failed for https://baresearch.org/: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+2025-08-19 23:07:15,702 - __main__ - ERROR - Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 730, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 909, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 513, in wrap_socket
+    return self.sslsocket_class._create(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 1104, in _create
+    self.do_handshake()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 1375, in do_handshake
+    self._sslobj.do_handshake()
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 730, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 909, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 513, in wrap_socket
+    return self.sslsocket_class._create(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 1104, in _create
+    self.do_handshake()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\ssl.py", line 1375, in do_handshake
+    self._sslobj.do_handshake()
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 166, in _make_search_request
+    response = self.session.get(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 682, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 215, in search
+    response = self._make_search_request(target_instance, query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 398, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 451, in result
+    return self.__get_result()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 403, in __get_result
+    raise self._exception
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 197, in _make_search_request
+    raise NetworkError(f"Request failed for {instance.url}: {e}")
+pyserxng.exceptions.NetworkError: Request failed for https://baresearch.org/: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 474, in verify_news
+    response_search = Search_Engines_Link(search_query)
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 314, in Search_Engines_Link
+    news_results = client.search_news(query)  # 开搜
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 307, in search_news
+    return self.search(query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 277, in search
+    raise SearchError(f"Search failed: {e}")
+pyserxng.exceptions.SearchError: Search failed: Request failed for https://baresearch.org/: ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+
+2025-08-19 23:07:20,394 - __main__ - INFO - [session-c4b07503] Received verification request at 2025-08-19T15:07:20.394423
+2025-08-19 23:07:20,394 - __main__ - INFO - [session-c4b07503] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-19 23:07:20,394 - __main__ - INFO - [session-c4b07503] Processing 内容字符数: 274 characters
+2025-08-19 23:07:29,057 - __main__ - INFO - 这里👇
+2025-08-19 23:07:29,057 - __main__ - INFO - On May 30, 2025, at a closed-door meeting for SpaceX employees, Tesla and SpaceX CEO Elon Musk shocked everyone by stating, "In fact, I am not an Earthling, but a representative from Mars. We have been observing the development of human society." According to an anonymous employee on the scene, Musk showed a video that is said to come from a "Mars mothership" and announced that the existence of Martian civilization will be fully disclosed before 2030. The news quickly sparked heated discussions on social media platforms, with the Twitter topic #ElonIsAlien topping the trending list. Some experts questioned its authenticity, calling it "a possible high-level public relations stunt," but conspiracy theorists said "this confirms decades of speculation about Musk's identity." So far, NASA, the Pentagon, and the United Nations have not made an official response to the matter.
+2025-08-19 23:07:29,058 - __main__ - INFO - [session-c4b07503] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.93}
+2025-08-19 23:07:29,064 - __main__ - INFO - [session-c4b07503] 提取实体: 2025年5月30日，在一次SpaceX内部员工闭门会议上，特斯拉和SpaceX首席执行官埃隆·马斯克震惊四座地表示：“其实我并不是地球人，而是来自火星的代表。我们一直在观察人类社会的发展。”据现场匿...
+2025-08-19 23:07:29,064 - __main__ - INFO - [session-c4b07503] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 2025年5月30日，在一次SpaceX内部员...
+2025-08-19 23:07:33,450 - __main__ - INFO - [session-c4b07503] SearchAPI 返回 1 个结果
+2025-08-19 23:07:33,450 - __main__ - INFO - [session-c4b07503] 发现可靠来源: False
+2025-08-19 23:07:33,450 - __main__ - INFO - [session-c4b07503] 直接来源验证: False
+2025-08-19 23:07:33,451 - __main__ - INFO - [session-c4b07503] 可能匹配: False
+2025-08-19 23:07:33,451 - __main__ - INFO - [session-c4b07503] 搜索结果数量: 1
+2025-08-19 23:07:33,451 - __main__ - INFO - [session-c4b07503] 匹配可靠来源: []
+2025-08-19 23:07:33,451 - __main__ - INFO - [session-c4b07503] 来源置信度: 30 (无可靠匹配)
+2025-08-19 23:07:33,451 - __main__ - INFO - [session-c4b07503] LLM 分析初始化
+2025-08-19 23:07:41,308 - __main__ - INFO - [session-c4b07503] LLM 分析完成
+2025-08-19 23:07:41,309 - __main__ - INFO - [session-c4b07503] 内容标记为：疑似为假
+2025-08-20 13:24:26,440 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-20 13:24:31,198 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-20 13:24:31,205 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-26 21:06:41,144 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-26 21:06:45,741 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-26 21:06:45,747 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-08-27 14:15:34,341 - __main__ - INFO - [session-070d371d] Received verification request at 2025-08-27T06:15:34.341389
+2025-08-27 14:15:34,343 - __main__ - INFO - [session-070d371d] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-08-27 14:15:34,347 - __main__ - INFO - [session-070d371d] Processing 内容字符数: 274 characters
+2025-08-27 14:15:39,642 - __main__ - INFO - 这里👇
+2025-08-27 14:15:39,643 - __main__ - INFO - On May 30, 2025, at a closed-door meeting for SpaceX employees, Tesla and SpaceX CEO Elon Musk shocked everyone by stating, "In fact, I am not an Earthling, but a representative from Mars. We have been observing the development of human society." According to an anonymous employee on the scene, Musk showed a video purported to be from a "Mars mothership" and announced that the existence of Martian civilization would be fully disclosed by 2030. The news quickly sparked heated discussion on social media platforms, with the Twitter topic #ElonIsAlien topping the trending list. Some experts questioned its authenticity, calling it "a possible high-level public relations stunt," while conspiracy theorists said "this confirms decades of speculation about Musk's identity." So far, NASA, the Pentagon, and the United Nations have not made an official response to the matter.
+2025-08-27 14:15:39,651 - __main__ - INFO - [session-070d371d] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.92}
+2025-08-27 14:15:39,683 - __main__ - INFO - [session-070d371d] 提取实体: 2025年5月30日，在一次SpaceX内部员工闭门会议上，特斯拉和SpaceX首席执行官埃隆·马斯克震惊四座地表示：“其实我并不是地球人，而是来自火星的代表。我们一直在观察人类社会的发展。”据现场匿...
+2025-08-27 14:15:39,683 - __main__ - INFO - [session-070d371d] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 2025年5月30日，在一次SpaceX内部员...
+2025-08-27 14:15:43,139 - __main__ - INFO - [session-070d371d] SearchAPI 返回 1 个结果
+2025-08-27 14:15:43,140 - __main__ - INFO - [session-070d371d] 发现可靠来源: False
+2025-08-27 14:15:43,140 - __main__ - INFO - [session-070d371d] 直接来源验证: False
+2025-08-27 14:15:43,140 - __main__ - INFO - [session-070d371d] 可能匹配: False
+2025-08-27 14:15:43,140 - __main__ - INFO - [session-070d371d] 搜索结果数量: 1
+2025-08-27 14:15:43,140 - __main__ - INFO - [session-070d371d] 匹配可靠来源: []
+2025-08-27 14:15:43,141 - __main__ - INFO - [session-070d371d] 来源置信度: 30 (无可靠匹配)
+2025-08-27 14:15:43,142 - __main__ - INFO - [session-070d371d] LLM 分析初始化
+2025-08-27 14:15:55,019 - __main__ - INFO - [session-070d371d] LLM 分析完成
+2025-08-27 14:15:55,022 - __main__ - INFO - [session-070d371d] 内容标记为：疑似为假
+2025-08-27 15:00:01,840 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-08-27 15:00:05,854 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-08-27 15:00:05,865 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-09-01 08:56:59,654 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-09-01 08:57:04,367 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-09-01 08:57:04,374 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-09-01 09:01:22,812 - __main__ - INFO - [session-812ef2f2] Received verification request at 2025-09-01T01:01:22.812771
+2025-09-01 09:01:22,813 - __main__ - INFO - [session-812ef2f2] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-09-01 09:01:22,815 - __main__ - INFO - [session-812ef2f2] Processing 内容字符数: 274 characters
+2025-09-01 09:01:27,327 - __main__ - INFO - 这里👇
+2025-09-01 09:01:27,328 - __main__ - INFO - On May 30, 2025, at a closed-door meeting for SpaceX employees, Tesla and SpaceX CEO Elon Musk shocked everyone by stating, "In fact, I am not an Earthling, but a representative from Mars. We have been observing the development of human society." According to an anonymous employee on the scene, Musk showed a video purported to be from a "Mars mothership" and announced that the existence of Martian civilization would be fully disclosed before 2030. The news quickly sparked heated discussions on social media platforms, with the Twitter topic #ElonIsAlien topping the trending list. Some experts questioned its authenticity, calling it "a possible high-level public relations stunt," while conspiracy theorists said "this confirms decades of speculation about Musk's identity." So far, NASA, the Pentagon, and the United Nations have not made an official response to the matter.
+2025-09-01 09:01:27,329 - __main__ - INFO - [session-812ef2f2] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.91}
+2025-09-01 09:01:27,347 - __main__ - INFO - [session-812ef2f2] 提取实体: 2025年5月30日，在一次SpaceX内部员工闭门会议上，特斯拉和SpaceX首席执行官埃隆·马斯克震惊四座地表示：“其实我并不是地球人，而是来自火星的代表。我们一直在观察人类社会的发展。”据现场匿...
+2025-09-01 09:01:27,347 - __main__ - INFO - [session-812ef2f2] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 2025年5月30日，在一次SpaceX内部员...
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] SearchAPI 返回 1 个结果
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 发现可靠来源: False
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 直接来源验证: False
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 可能匹配: False
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 搜索结果数量: 1
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 匹配可靠来源: []
+2025-09-01 09:01:31,878 - __main__ - INFO - [session-812ef2f2] 来源置信度: 30 (无可靠匹配)
+2025-09-01 09:01:31,879 - __main__ - INFO - [session-812ef2f2] LLM 分析初始化
+2025-09-01 09:01:45,609 - __main__ - INFO - [session-812ef2f2] LLM 分析完成
+2025-09-01 09:01:45,616 - __main__ - INFO - [session-812ef2f2] 内容标记为：疑似为假
+2025-09-01 10:18:53,267 - __main__ - INFO - [session-d7b460c8] Received verification request at 2025-09-01T02:18:53.267949
+2025-09-01 10:18:53,271 - __main__ - INFO - [session-d7b460c8] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-09-01 10:18:53,272 - __main__ - INFO - [session-d7b460c8] Processing 内容字符数: 162 characters
+2025-09-01 10:18:56,350 - __main__ - INFO - 这里👇
+2025-09-01 10:18:56,351 - __main__ - INFO - At a recent private technology roundtable meeting, Tesla and SpaceX founder Elon Musk suddenly stated, "I am an alien from Mars." This statement shocked the guests present. According to so-called "insider sources," Musk had reportedly visited a "government-hidden Mars base" multiple times in his early years and had experience of contact with extraterrestrial civilizations. Even more astonishingly, he said that "the Starship program is to go home." Currently, this message has not been confirmed by mainstream media.
+2025-09-01 10:18:56,352 - __main__ - INFO - [session-d7b460c8] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.94}
+2025-09-01 10:18:56,369 - __main__ - INFO - [session-d7b460c8] 提取实体: ...
+2025-09-01 10:18:56,369 - __main__ - WARNING - [session-d7b460c8] 未找到实体
+2025-09-01 10:18:56,370 - __main__ - INFO - [session-d7b460c8] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-09-01 10:18:58,847 - __main__ - INFO - [session-d7b460c8] SearchAPI 返回 1 个结果
+2025-09-01 10:18:58,848 - __main__ - INFO - [session-d7b460c8] 发现可靠来源: False
+2025-09-01 10:18:58,848 - __main__ - INFO - [session-d7b460c8] 直接来源验证: False
+2025-09-01 10:18:58,848 - __main__ - INFO - [session-d7b460c8] 可能匹配: False
+2025-09-01 10:18:58,849 - __main__ - INFO - [session-d7b460c8] 搜索结果数量: 1
+2025-09-01 10:18:58,849 - __main__ - INFO - [session-d7b460c8] 匹配可靠来源: []
+2025-09-01 10:18:58,849 - __main__ - INFO - [session-d7b460c8] 来源置信度: 30 (无可靠匹配)
+2025-09-01 10:18:58,850 - __main__ - INFO - [session-d7b460c8] LLM 分析初始化
+2025-09-01 10:19:06,424 - __main__ - INFO - [session-d7b460c8] LLM 分析完成
+2025-09-01 10:19:06,428 - __main__ - INFO - [session-d7b460c8] 内容标记为：疑似为假
+2025-09-01 22:23:54,948 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-09-01 22:24:01,195 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-09-01 22:24:01,207 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-09-01 22:28:31,611 - __main__ - INFO - [session-7031ed5b] Received verification request at 2025-09-01T14:28:31.611141
+2025-09-01 22:28:31,612 - __main__ - INFO - [session-7031ed5b] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-09-01 22:28:31,612 - __main__ - INFO - [session-7031ed5b] Processing 内容字符数: 162 characters
+2025-09-01 22:28:34,587 - __main__ - INFO - 这里👇
+2025-09-01 22:28:34,588 - __main__ - INFO - At a recent private technology roundtable meeting, Tesla and SpaceX founder Elon Musk suddenly stated, "I am an alien from Mars." This statement shocked the guests present. According to so-called "insider sources," Musk had reportedly visited a "government-concealed Mars base" multiple times in his early years and had experience of contact with extraterrestrial civilizations. Even more astonishingly, he said that "the Starship program is to go home." Currently, this message has not been confirmed by mainstream media.
+2025-09-01 22:28:34,588 - __main__ - INFO - [session-7031ed5b] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.94}
+2025-09-01 22:28:34,606 - __main__ - INFO - [session-7031ed5b] 提取实体: ...
+2025-09-01 22:28:34,606 - __main__ - WARNING - [session-7031ed5b] 未找到实体
+2025-09-01 22:28:34,607 - __main__ - INFO - [session-7031ed5b] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-09-01 22:28:38,547 - __main__ - INFO - [session-7031ed5b] SearchAPI 返回 1 个结果
+2025-09-01 22:28:38,548 - __main__ - INFO - [session-7031ed5b] 发现可靠来源: False
+2025-09-01 22:28:38,549 - __main__ - INFO - [session-7031ed5b] 直接来源验证: False
+2025-09-01 22:28:38,549 - __main__ - INFO - [session-7031ed5b] 可能匹配: False
+2025-09-01 22:28:38,549 - __main__ - INFO - [session-7031ed5b] 搜索结果数量: 1
+2025-09-01 22:28:38,549 - __main__ - INFO - [session-7031ed5b] 匹配可靠来源: []
+2025-09-01 22:28:38,549 - __main__ - INFO - [session-7031ed5b] 来源置信度: 30 (无可靠匹配)
+2025-09-01 22:28:38,550 - __main__ - INFO - [session-7031ed5b] LLM 分析初始化
+2025-09-01 22:28:47,104 - __main__ - INFO - [session-7031ed5b] LLM 分析完成
+2025-09-01 22:28:47,106 - __main__ - INFO - [session-7031ed5b] 内容标记为：疑似为假
+2025-11-29 14:03:37,195 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-11-29 14:03:41,625 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-11-29 14:03:41,632 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-11-29 14:11:06,441 - __main__ - INFO - [session-e768794a] Received verification request at 2025-11-29T06:11:06.441089
+2025-11-29 14:11:06,443 - __main__ - INFO - [session-e768794a] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-11-29 14:11:06,445 - __main__ - INFO - [session-e768794a] Processing 内容字符数: 26 characters
+2025-11-29 14:11:07,338 - __main__ - INFO - 这里👇
+2025-11-29 14:11:07,338 - __main__ - INFO - Shocking! Musk admits his identity: "I am an alien who has lived on Mars"
+2025-11-29 14:11:07,338 - __main__ - INFO - [session-e768794a] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.86}
+2025-11-29 14:11:07,357 - __main__ - INFO - [session-e768794a] 提取实体: ...
+2025-11-29 14:11:07,357 - __main__ - WARNING - [session-e768794a] 未找到实体
+2025-11-29 14:11:07,358 - __main__ - INFO - [session-e768794a] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-11-29 14:11:55,781 - __main__ - ERROR - 未预期报错: Search failed: Timeout connecting to https://baresearch.org/
+2025-11-29 14:11:55,883 - __main__ - ERROR - Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 208, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x0000023FA58D5750>, 'Connection to baresearch.org timed out. (connect timeout=15)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000023FA58D5750>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 166, in _make_search_request
+    response = self.session.get(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000023FA58D5750>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 215, in search
+    response = self._make_search_request(target_instance, query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 398, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 451, in result
+    return self.__get_result()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 403, in __get_result
+    raise self._exception
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 195, in _make_search_request
+    raise NetworkError(f"Timeout connecting to {instance.url}")
+pyserxng.exceptions.NetworkError: Timeout connecting to https://baresearch.org/
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 474, in verify_news
+    response_search = Search_Engines_Link(search_query)
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 314, in Search_Engines_Link
+    news_results = client.search_news(query)  # 开搜
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 307, in search_news
+    return self.search(query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 277, in search
+    raise SearchError(f"Search failed: {e}")
+pyserxng.exceptions.SearchError: Search failed: Timeout connecting to https://baresearch.org/
+
+2025-12-01 16:39:04,062 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-12-01 16:39:08,792 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-12-01 16:39:08,798 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-12-01 16:45:11,292 - __main__ - INFO - 成功加载了 spaCy 模型
+2025-12-01 16:45:16,117 - __main__ - INFO - Fake-News-Bert 模型加载成功
+2025-12-01 16:45:16,128 - __main__ - INFO - 虚假新闻识别 API 启动...
+2025-12-01 16:50:04,081 - __main__ - INFO - [session-3a3d79e9] Received verification request at 2025-12-01T08:50:04.081320
+2025-12-01 16:50:04,081 - __main__ - INFO - [session-3a3d79e9] Processing 标题: 震惊！马斯克承认身份：“我是外星人，早在火星生活过”...
+2025-12-01 16:50:04,082 - __main__ - INFO - [session-3a3d79e9] Processing 内容字符数: 26 characters
+2025-12-01 16:50:05,206 - __main__ - INFO - 这里👇
+2025-12-01 16:50:05,207 - __main__ - INFO - Shocking! Musk admits his identity: "I am an alien who has lived on Mars"
+2025-12-01 16:50:05,208 - __main__ - INFO - [session-3a3d79e9] BERT 检测结果: {'bert_label': '假新闻', 'bert_score': 99.86}
+2025-12-01 16:50:05,226 - __main__ - INFO - [session-3a3d79e9] 提取实体: ...
+2025-12-01 16:50:05,226 - __main__ - WARNING - [session-3a3d79e9] 未找到实体
+2025-12-01 16:50:05,226 - __main__ - INFO - [session-3a3d79e9] 初始化搜索API请求，搜索关键字： 震惊！马斯克承认身份：“我是外星人，早在火星生活过” 震惊！马斯克承认身份：“我是外星人，早在火星生...
+2025-12-01 16:50:53,764 - __main__ - ERROR - 未预期报错: Search failed: Timeout connecting to https://baresearch.org/
+2025-12-01 16:50:53,849 - __main__ - ERROR - Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connection.py", line 208, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x00000262A58F8DC0>, 'Connection to baresearch.org timed out. (connect timeout=15)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000262A58F8DC0>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 166, in _make_search_request
+    response = self.session.get(
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\requests\adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='baresearch.org', port=443): Max retries exceeded with url: /search?q=%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D+%E9%9C%87%E6%83%8A%EF%BC%81%E9%A9%AC%E6%96%AF%E5%85%8B%E6%89%BF%E8%AE%A4%E8%BA%AB%E4%BB%BD%EF%BC%9A%E2%80%9C%E6%88%91%E6%98%AF%E5%A4%96%E6%98%9F%E4%BA%BA%EF%BC%8C%E6%97%A9%E5%9C%A8%E7%81%AB%E6%98%9F%E7%94%9F%E6%B4%BB%E8%BF%87%E2%80%9D&categories=news&language=en (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000262A58F8DC0>, 'Connection to baresearch.org timed out. (connect timeout=15)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 215, in search
+    response = self._make_search_request(target_instance, query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 398, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 451, in result
+    return self.__get_result()
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\concurrent\futures\_base.py", line 403, in __get_result
+    raise self._exception
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\tenacity\__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 195, in _make_search_request
+    raise NetworkError(f"Timeout connecting to {instance.url}")
+pyserxng.exceptions.NetworkError: Timeout connecting to https://baresearch.org/
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 474, in verify_news
+    response_search = Search_Engines_Link(search_query)
+  File "F:\0_MyProject\TruthLensLive\modules\RagDetect\main.py", line 314, in Search_Engines_Link
+    news_results = client.search_news(query)  # 开搜
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 307, in search_news
+    return self.search(query, search_config)
+  File "F:\0_MyProject\Anaconda\envs\xtuner-env\lib\site-packages\pyserxng\client.py", line 277, in search
+    raise SearchError(f"Search failed: {e}")
+pyserxng.exceptions.SearchError: Search failed: Timeout connecting to https://baresearch.org/
+

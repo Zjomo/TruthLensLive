@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="zh-CN" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>TruthLens - 新闻可信度验证系统</title>
+  <!-- Tailwind v4 Play CDN：开发/演示免构建（生产建议本地构建） -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+  <!-- 科技感字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-red: #e63946;
+      --primary-white: #f1faee;
+      --accent-blue: #a8dadc;
+      --dark-blue: #457b9d;
+      --deep-blue: #1d3557;
+      --tech-gradient: linear-gradient(135deg, #ff6b6b 0%, #e63946 100%);
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background-color: var(--primary-white);
+      color: #333;
+    }
+
+    .tech-font {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 科技感UI元素 */
+    .tech-border {
+      border: 1px solid rgba(230, 57, 70, 0.3);
+      box-shadow: 0 4px 20px rgba(230, 57, 70, 0.15),
+                 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    .tech-glow {
+      box-shadow: 0 0 10px rgba(230, 57, 70, 0.4);
+    }
+
+    .tech-button {
+      background: var(--tech-gradient);
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .tech-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(230, 57, 70, 0.4);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+    }
+
+    /* 细节微调（滚动条/代码块/淡入） */
+    ::-webkit-scrollbar{height:8px;width:8px;background: transparent;}
+    ::-webkit-scrollbar-thumb{background: var(--tech-gradient); border-radius:8px}
+    .fade-in{animation:fade .3s ease-out}
+    @keyframes fade{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    pre{white-space:pre-wrap}
+
+    #resultCard {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+
+    /* 科技感卡片 */
+    .tech-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(230, 57, 70, 0.2);
+      box-shadow: 0 8px 32px rgba(230, 57, 70, 0.1);
+    }
+
+    /* 徽章样式 */
+    .badge-verified {
+      background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+      color: white;
+    }
+
+    .badge-fake {
+      background: var(--tech-gradient);
+      color: white;
+    }
+
+    .badge-pending {
+      background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      color: white;
+    }
+
+    /* 分割线样式 */
+    .divider {
+      height: 2px;
+      background: var(--tech-gradient);
+      margin: 1rem 0;
+      opacity: 0.7;
+    }
+
+    /* 输入框焦点效果 */
+    input:focus, textarea:focus {
+      border-color: var(--primary-red);
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+    }
+
+    /* 日志区域样式 */
+    #log-output {
+      background: #ffffff;
+      color: #ff3c00;
+      font-family: 'Courier New', monospace;
+      border-radius: 8px;
+      border: 1px solid rgba(230, 57, 70, 0.4);
+    }
+  </style>
+</head>
+
+<body class="h-full">
+  <!-- 顶栏 -->
+  <header class="sticky top-0 z-40 border-b border-red-200 backdrop-blur bg-white/90">
+    <div class="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg tech-glow" style="background: var(--tech-gradient)"></div>
+        <h1 class="tech-font text-xl font-bold text-red-600 tracking-tight">TRUTHLENS</h1>
+        <p class="text-xs text-gray-500">基于RAG 的虚假新闻来源检测平台</p>
+      </div>
+      <div class="ms-auto flex items-center gap-2">
+        <!-- 深浅色切换 -->
+        <button id="themeBtn" class="rounded-xl border border-red-200 px-3 py-1.5 text-sm hover:bg-red-50">
+          外观：<span id="themeLabel">浅色</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体 -->
+  <main class="mx-auto max-w-7xl px-4 py-8 grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <!-- 左：表单 -->
+    <section class="lg:col-span-2 space-y-6">
+      <div class="tech-card p-6">
+        <h2 class="text-lg font-bold mb-4 text-red-700 tech-font">新闻内容</h2>
+        <form id="verifyForm" class="space-y-4">
+          <label class="block">
+            <span class="text-sm text-red-700 font-medium">标题（headline）</span>
+            <input required name="headline" class="mt-1 w-full rounded-xl border border-red-200 bg-white px-4 py-3 outline-none focus:ring-2 ring-red-500/40" placeholder="例：某名人宣布..." />
+          </label>
+          <label class="block">
+            <span class="text-sm text-red-700 font-medium">正文（content）</span>
+            <textarea required name="content" rows="6" class="mt-1 w-full rounded-xl border border-red-200 bg-white px-4 py-3 outline-none focus:ring-2 ring-red-500/40" placeholder="粘贴新闻正文或主要段落"></textarea>
+          </label>
+          <div class="flex items-center gap-3 pt-2">
+            <button id="btnSubmit" class="tech-button rounded-xl px-5 py-3 text-sm font-medium pulse-animation">提交验证</button>
+            <button type="reset" id="btnReset" class="rounded-xl border border-red-200 px-4 py-2 text-sm hover:bg-red-50 text-red-700">重置</button>
+          </div>
+        </form>
+        <!-- 提示区 -->
+        <div id="formHint" class="mt-3 hidden text-sm text-red-600 bg-red-50 p-2 rounded-lg"></div>
+      </div>
+
+      <!-- 域名检测结果 -->
+      <div id="domainCard" class="hidden tech-card p-5 fade-in">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-red-700">域名可信度检测</h3>
+          <span id="domainBadge" class="text-xs px-3 py-1 rounded-full bg-red-100 text-red-800">未检测</span>
+        </div>
+        <div class="divider"></div>
+        <dl class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          <div><dt class="text-red-600">解析域名</dt><dd id="parsedDomain" class="font-mono text-gray-700"></dd></div>
+          <div><dt class="text-red-600">基础域名</dt><dd id="baseDomain" class="font-mono text-gray-700"></dd></div>
+          <div class="sm:col-span-2"><dt class="text-red-600">匹配的可信源</dt><dd id="matchedList" class="font-mono break-words text-gray-700"></dd></div>
+        </dl>
+      </div>
+
+      <div class="tech-card p-5">
+        <h2 class="text-base font-bold text-red-700 mb-3">系统日志</h2>
+        <pre id="log-output" class="p-3 rounded-xl text-xs overflow-y-scroll h-64 whitespace-pre-wrap font-mono">加载中...</pre>
+        <div class="flex justify-end mt-2">
+          <button onclick="downloadLog()" class="text-xs text-red-600 hover:underline">下载完整日志</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右：结果 -->
+    <section class="lg:col-span-3 space-y-6">
+      <div class="tech-card p-0 overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-red-100">
+          <h2 class="text-lg font-bold text-red-700 tech-font">验证结果</h2>
+          <div class="flex items-center gap-2">
+            <button id="btnCopyJson" class="rounded-lg border border-red-200 px-3 py-1.5 text-sm hover:bg-red-50 text-red-700">复制 JSON</button>
+          </div>
+        </div>
+
+        <!-- 结果卡片区域 -->
+        <div id="resultArea" class="p-5 space-y-4">
+          <!-- 骨架 -->
+          <div id="skeleton" class="hidden">
+            <div class="h-6 w-32 rounded-xl skeleton"></div>
+            <div class="mt-2 h-4 w-full rounded-xl skeleton"></div>
+            <div class="mt-2 h-4 w-4/5 rounded-xl skeleton"></div>
+            <div class="mt-2 h-4 w-3/5 rounded-xl skeleton"></div>
+          </div>
+
+          <div id="resultEmpty" class="text-center py-10">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full tech-glow" style="background: var(--tech-gradient)"></div>
+            <p class="text-red-700 font-medium">提交后将在此显示验证结果</p>
+            <p class="text-sm text-gray-500 mt-1">系统将综合分析新闻内容可信度</p>
+          </div>
+
+          <div id="resultCard" class="hidden fade-in">
+            <div class="flex items-center gap-2 mb-4">
+              <span id="verdictBadge" class="text-xs px-3 py-1.5 rounded-full">—</span>
+              <span id="confidenceBadge" class="text-xs px-3 py-1.5 rounded-full bg-blue-100 text-blue-800">—</span>
+            </div>
+            <div class="divider"></div>
+            <p id="statusMessage" class="mt-3 whitespace-pre-wrap text-sm leading-6 bg-gray-50 p-4 rounded-lg"></p>
+
+            <!-- BERT 结果显示区域 -->
+            <div id="bertResult" class="hidden mt-4 p-3 rounded-lg bg-gray-100">
+              <h4 class="text-sm font-medium text-gray-700 mb-1">BERT 检测结果</h4>
+              <p id="bertText" class="text-xs"></p>
+            </div>
+
+            <!-- 可折叠详情 -->
+            <details class="mt-4 group">
+              <summary class="cursor-pointer select-none text-sm text-red-700 font-medium hover:text-red-900 flex items-center">
+                <span>详细分析数据</span>
+                <svg class="w-4 h-4 ml-1 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </summary>
+              <div class="mt-3 grid gap-4 text-sm">
+                <div>
+                  <div class="text-red-600 mb-2 font-medium">AI 分析说明</div>
+                  <div id="llmText" class="rounded-xl border border-red-100 bg-white p-4 text-xs overflow-auto max-h-60"></div>
+                </div>
+                <div>
+                  <div class="text-red-600 mb-2 font-medium">结构化数据</div>
+                  <pre id="jsonText" class="rounded-xl border border-red-100 bg-white p-4 text-xs overflow-auto max-h-60"></pre>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- 指标卡片 -->
+      <div class="grid grid-cols-2 gap-4 hidden" id="metricsCard">
+        <div class="tech-card p-4 text-center">
+          <div class="text-2xl font-bold text-red-600 tech-font">92%</div>
+          <div class="text-xs text-gray-500 mt-1">可信度评分</div>
+        </div>
+        <div class="tech-card p-4 text-center">
+          <div class="text-2xl font-bold text-red-600 tech-font">0.87</div>
+          <div class="text-xs text-gray-500 mt-1">一致性指数</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="pointer-events-none fixed bottom-4 right-4 hidden">
+    <div class="rounded-xl bg-red-600 text-white px-4 py-2 text-sm shadow-lg">已复制到剪贴板</div>
+  </div>
+
+  <script>
+    // 等待动画
+    function startLoading(){
+      skeleton.classList.remove('hidden');
+      resultCard.classList.add('hidden');
+      resultEmpty.classList.add('hidden');
+      btnSubmit.disabled = true;
+    }
+    function stopLoading(){
+      skeleton.classList.add('hidden');
+      btnSubmit.disabled = false;
+    }
+
+    // 下载日志函数
+    async function downloadLog() {
+      try {
+        const response = await fetch('/download_log');
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'truthlens_log.log';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error('下载失败');
+        }
+      } catch (error) {
+        console.error('下载错误:', error);
+      }
+    }
+
+    // ---------------- 运行日志（WebSocket） ----------------
+    function autoUpdateLogs() {
+      fetch("/logs")
+        .then(res => res.json())
+        .then(data => {
+          const logOutput = document.getElementById("log-output");
+          if (data.status === "success") {
+            logOutput.innerText = data.log;
+            logOutput.scrollTop = logOutput.scrollHeight;
+          } else {
+            logOutput.innerText = "错误：" + data.log;
+          }
+        });
+    }
+
+    setInterval(autoUpdateLogs, 5000);  // 每 5 秒刷新一次
+    autoUpdateLogs(); // 页面初始加载
+
+    // ---------------- 主题切换 ----------------
+    (function initTheme(){
+      const themeBtn = document.getElementById('themeBtn');
+      const themeLabel = document.getElementById('themeLabel');
+      const themeKey = 'rumor-theme';
+      function applyTheme(mode){
+        document.documentElement.classList.remove('light','dark');
+        if (mode==='light' || mode==='dark') document.documentElement.classList.add(mode);
+        themeLabel.textContent = mode==='light' ? '浅色' : mode==='dark' ? '深色' : '跟随系统';
+        localStorage.setItem(themeKey, mode);
+      }
+      themeBtn.addEventListener('click', ()=>{
+        const now = localStorage.getItem(themeKey) || 'system';
+        applyTheme(now==='system' ? 'light' : now==='light' ? 'dark' : 'system');
+      });
+      applyTheme(localStorage.getItem(themeKey) || 'system');
+    })();
+
+    // ---------------- DOM 引用 & 工具函数 ----------------
+    const f = document.getElementById('verifyForm');
+    const hint = document.getElementById('formHint');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnReset = document.getElementById('btnReset');
+    const btnTestDomain = document.getElementById('btnTestDomain');
+
+    const domainCard = document.getElementById('domainCard');
+    const domainBadge = document.getElementById('domainBadge');
+    const parsedDomain = document.getElementById('parsedDomain');
+    const baseDomain = document.getElementById('baseDomain');
+    const matchedList = document.getElementById('matchedList');
+
+    const resultArea = document.getElementById('resultArea');
+    const resultEmpty = document.getElementById('resultEmpty');
+    const resultCard = document.getElementById('resultCard');
+    const skeleton = document.getElementById('skeleton');
+    const verdictBadge = document.getElementById('verdictBadge');
+    const confidenceBadge = document.getElementById('confidenceBadge');
+    const statusMessage = document.getElementById('statusMessage');
+    const llmText = document.getElementById('llmText');
+    const jsonText = document.getElementById('jsonText');
+    const btnCopyJson = document.getElementById('btnCopyJson');
+    const toast = document.getElementById('toast');
+    const bertResult = document.getElementById('bertResult');
+    const bertText = document.getElementById('bertText');
+
+    function showToast(){
+      toast.classList.remove('hidden');
+      setTimeout(()=>toast.classList.add('hidden'), 1400);
+    }
+
+    function setBadge(el, text, type){
+      el.textContent = text;
+      if (type === 'verified') {
+        el.className = "text-xs px-3 py-1.5 rounded-full badge-verified";
+      } else if (type === 'fake') {
+        el.className = "text-xs px-3 py-1.5 rounded-full badge-fake";
+      } else if (type === 'pending') {
+        el.className = "text-xs px-3 py-1.5 rounded-full badge-pending";
+      } else {
+        el.className = "text-xs px-3 py-1.5 rounded-full bg-gray-100 text-gray-800";
+      }
+    }
+
+    function startLoading(){
+      skeleton.classList.remove('hidden');
+      resultCard.classList.add('hidden');
+      resultEmpty.classList.add('hidden');
+      btnSubmit.disabled = true;
+    }
+
+    function stopLoading(){
+      skeleton.classList.add('hidden');
+      btnSubmit.disabled = false;
+    }
+
+    // ---------------- 提交验证：/verify ----------------
+    f.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        headline: (f.headline?.value || '').trim(),
+        content: (f.content?.value || '').trim(),
+        source_url: (f.source_url?.value || '').trim()
+      };
+      if (!payload.headline || !payload.content){
+        hint.classList.remove('hidden');
+        hint.textContent = '标题与正文均为必填';
+        return;
+      }
+      hint.classList.add('hidden');
+      startLoading();
+      try{
+        const resp = await fetch('/verify', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error(`服务错误：${resp.status}`);
+        const data = await resp.json();
+        stopLoading();
+        renderResult(data);
+      }catch(err){
+        stopLoading();
+        resultEmpty.classList.add('hidden');
+        setBadge(verdictBadge,'请求失败','fake');
+        setBadge(confidenceBadge,'—','pending');
+        statusMessage.textContent = String(err);
+        llmText.textContent = '';
+        jsonText.textContent = '';
+        resultCard.classList.remove('hidden');
+      }
+    });
+
+    // ---------------- 重置按钮 ----------------
+    btnReset.addEventListener('click', ()=>{
+      resultCard.classList.add('hidden');
+      resultEmpty.classList.remove('hidden');
+      hint.classList.add('hidden');
+      domainCard.classList.add('hidden');
+      bertResult.classList.add('hidden');
+      if (f.source_url) f.source_url.value = '';
+    });
+
+    // ---------------- 渲染结果 ----------------
+    function renderResult(res){
+      const verdict = res.verdict || '—';
+      const conf = res.verification_data?.source_confidence
+                ?? res.verification_data?.verification_metrics?.source_validation_score
+                ?? 0;
+      const llm = res.llm_response || '';
+      const msg = res.status_message || '';
+      const json = JSON.stringify(res, null, 2);
+
+      let badgeType = 'pending';
+      if (/已验证/.test(verdict)) badgeType = 'verified';
+      else if (/疑似为假/.test(verdict)) badgeType = 'fake';
+
+      setBadge(verdictBadge, verdict, badgeType);
+      setBadge(confidenceBadge, `可信度 ${conf}%`, 'pending');
+      statusMessage.textContent = msg;
+      const md = window.markdownit();
+      llmText.innerHTML = md.render(llm);
+      jsonText.textContent = json;
+
+      // 显示 BERT 检测结果
+      if (res.bert_result){
+        bertText.textContent = `${res.bert_result.bert_label}（置信度：${res.bert_result.bert_score}%）`;
+        bertResult.classList.remove('hidden');
+      } else {
+        bertResult.classList.add('hidden');
+      }
+
+      resultCard.classList.remove('hidden');
+      resultEmpty.classList.add('hidden');
+    }
+
+    // ---------------- 复制 JSON ----------------
+    btnCopyJson.addEventListener('click', async ()=>{
+      try{
+        const txt = (document.getElementById('jsonText')?.textContent || '').trim();
+        if (!txt) return;
+        await navigator.clipboard.writeText(txt);
+        showToast();
+      }catch{/* 忽略 */}
+    });
+  </script>
+</body>
+</html>

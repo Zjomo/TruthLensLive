@@ -2,7 +2,9 @@ node_modules/
 *.bin
 *.pyc
 *.pth
+*.pt
 *.safetensors
+*.mp4
 .idea/
 build/
 .vscode/

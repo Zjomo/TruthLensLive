@@ -1,273 +1,207 @@
 # TruthLensLive V2.0
 
+[🇨🇳 中文](README.zh-CN.md) | [🇬🇧 English](README.en-US.md)
+
+**Read this in other languages:** [简体中文](README.zh-CN.md)
+
+---
+
+一个综合的全栈应用，用于实时谣言检测和新闻验证。采用现代网络技术和人工智能驱动的分析来对抗错误信息。
+
 A comprehensive full-stack application for real-time rumor detection and news verification. Built with modern web technologies and AI-powered analysis to combat misinformation.
 
 ![License](https://img.shields.io/github/license/Zjomo/TruthLensLive?style=flat-square)
 ![Language](https://img.shields.io/github/languages/top/Zjomo/TruthLensLive?style=flat-square)
 
-## 🌟 Features
+---
 
-- **Real-Time News Feed**: Live streaming of news updates using Server-Sent Events (SSE)
-- **Rumor Detection**: AI-powered heuristic scoring system to identify potentially misleading content
-- **Multi-Source Aggregation**: RSS feed integration with automatic subscription conversion
-- **Interactive Dashboards**: Visual analytics with charts and statistics
-- **Admin Panel**: Comprehensive management interface with Element Plus UI
-- **Multi-Language Support**: Internationalization support for global users
-- **Responsive Design**: Mobile-friendly interface with Tailwind CSS
-- **Docker Support**: Containerized deployment for easy scaling
+## 📖 Language Selector | 语言选择
 
-## 🏗️ Tech Stack
+### 快速导航 | Quick Navigation
 
-### Frontend (49.5% Vue)
-- **Vue 3**: Modern reactive UI framework
-- **TypeScript**: Type-safe development
-- **Vite**: Lightning-fast build tool
-- **Element Plus**: Enterprise UI component library
-- **Chart.js**: Data visualization
-- **Tailwind CSS**: Utility-first styling
-- **Pinia**: State management
-- **Vue Router**: Client-side routing
+| 语言 | Language | 文档 | Documentation |
+|------|----------|------|---|
+| 🇨🇳 中文 | Chinese | [README.zh-CN.md](README.zh-CN.md) | [中文完整文档](README.zh-CN.md) |
+| 🇬🇧 English | English | [README.en-US.md](README.en-US.md) | [Full English Documentation](README.en-US.md) |
 
-### Backend (17.6% Python)
-- **Flask**: Lightweight web framework
-- **SQLite**: Lightweight database
-- **RSS Feeds**: News source aggregation
-- **RSSHub**: Subscription conversion layer
+---
 
-### Additional Technologies
-- **HTML/SCSS**: Styling and markup
-- **Jupyter Notebooks**: Data analysis and experimentation
+## 🎯 Project Overview | 项目概述
 
-## 📦 Project Structure
+**TruthLensLive** is a real-time rumor detection system that combines:
+- 📡 **Real-time Data Streaming**: RSS feed aggregation with live updates
+- 🤖 **AI-Powered Analysis**: Heuristic scoring for rumor detection
+- 📊 **Visual Analytics**: Interactive dashboards and charts
+- 🌍 **Multi-language Support**: English and Chinese interfaces
+- 🐳 **Cloud-Ready**: Docker support for easy deployment
+
+**TruthLensLive** 是一个实时谣言检测系统，结合：
+- 📡 **实时数据流**：RSS 源聚合和实时更新
+- 🤖 **AI 驱动分析**：用于谣言检测的启发式评分
+- 📊 **可视化分析**：交互式仪表板和图表
+- 🌍 **多语言支持**：英文和中文界面
+- 🐳 **云就绪**：支持 Docker 快速部署
+
+---
+
+## 🚀 Quick Start | 快速开始
+
+### English Users | 英文用户
+👉 **[Go to English README →](README.en-US.md)**
+
+### 中文用户
+👉 **[前往中文 README →](README.zh-CN.md)**
+
+---
+
+## 🌐 Supported Languages | 支持的语言
+
+| Language | 语言 | Status | 状态 | Documentation |
+|----------|------|--------|------|---|
+| English | 英文 | ✅ Complete | 完整 | [README.en-US.md](README.en-US.md) |
+| 中文简体 | Chinese Simplified | ✅ Complete | 完整 | [README.zh-CN.md](README.zh-CN.md) |
+| 中文繁體 | Chinese Traditional | ⏳ Coming Soon | 即将推出 | - |
+| 日本語 | Japanese | ⏳ Coming Soon | 即将推出 | - |
+
+---
+
+## 📁 Documentation Structure | 文档结构
 
 ```
-TruthLensLive/
-├── src/                      # Vue 3 frontend source
-├── public/                   # Static assets
-├── modules/                  # Feature modules
-│   ├── Index/               # Real-time rumor detection system
-│   └── ClashLinux/          # Linux proxy setup module
-├── mock/                    # Mock data for development
-├── locales/                 # i18n translations
-├── types/                   # TypeScript type definitions
-├── utils/                   # Utility functions
-├── package.json             # Node dependencies
-├── vite.config.ts          # Vite configuration
-├── tsconfig.json           # TypeScript configuration
-├── Dockerfile              # Container configuration
-└── requirements_.txt       # Python dependencies
+📦 Documentation / 文档
+├── 📄 README.md (This file - 当前文件)
+├── 📄 README.en-US.md (English - 英文)
+├── 📄 README.zh-CN.md (中文简体)
+├── 📂 modules/
+│   ├── 📄 Index/README.md (Backend Docs - 后端文档)
+│   └── 📄 ClashLinux/README.md (Linux Proxy - Linux 代理)
+└── 📚 Additional Resources (其他资源)
 ```
 
-## 🚀 Getting Started
+---
 
-### Prerequisites
-- Node.js 18.18.0 or higher
-- pnpm 9.0 or higher
-- Python 3.7+ (for backend services)
+## 🛠️ Tech Stack at a Glance | 技术栈一览
 
-### Installation
+| Category | 分类 | Technologies | 技术 |
+|----------|------|---|---|
+| Frontend | 前端 | Vue 3, TypeScript, Vite, Element Plus | Vue 3、TypeScript、Vite、Element Plus |
+| Backend | 后端 | Flask, Python, SQLite | Flask、Python、SQLite |
+| Tools | 工具 | Docker, RSSHub, Tailwind CSS | Docker、RSSHub、Tailwind CSS |
+| Styling | 样式 | SCSS, Tailwind CSS | SCSS、Tailwind CSS |
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/Zjomo/TruthLensLive.git
-cd TruthLensLive
-```
+---
 
-2. **Install frontend dependencies**
-```bash
-pnpm install
-```
+## ✨ Key Features | 主要功能
 
-3. **Install Python dependencies**
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements_.txt
-```
+### 🎨 User Interface | 用户界面
+- ✅ Real-time News Feed | 实时新闻源
+- ✅ Interactive Dashboards | 交互式仪表板
+- ✅ Responsive Mobile Design | 响应式移动设计
+- ✅ Dark/Light Mode Support | 深色/浅色模式支持
 
-### Development
+### 🔧 Core Features | 核心功能
+- ✅ AI-Powered Rumor Detection | AI 驱动的谣言检测
+- ✅ Multi-Source Aggregation | 多源聚合
+- ✅ Real-time Updates via SSE | 通过 SSE 实时更新
+- ✅ Admin Management Panel | 管理面板
 
-1. **Start the frontend development server**
-```bash
-pnpm dev
-```
-The application will be available at `http://localhost:5173`
+### 🌍 Localization | 本地化
+- ✅ English (en-US) | 英文
+- ✅ Chinese Simplified (zh-CN) | 中文简体
+- ⏳ More languages coming | 更多语言即将推出
 
-2. **Start the backend services**
-```bash
-python modules/Index/app.py
-# Backend will run on http://127.0.0.1:5000
-```
+---
 
-### Production Build
+## 📊 Project Statistics | 项目统计
 
-```bash
-pnpm build
-pnpm preview
-```
+- **Repository**: [Zjomo/TruthLensLive](https://github.com/Zjomo/TruthLensLive)
+- **License**: Apache License 2.0
+- **Language Distribution | 语言分布**:
+  - Vue: 49.5%
+  - TypeScript: 21%
+  - Python: 17.6%
+  - HTML: 5.2%
+  - Others: 6.7%
 
-## 🐳 Docker Deployment
+---
 
-```bash
-docker build -t truthlenslive:latest .
-docker run -p 5173:5173 -p 5000:5000 truthlenslive:latest
-```
+## 🎯 Getting Started | 入门指南
 
-## 📋 Available Scripts
+### For English Speakers | 英文用户
+1. Navigate to [README.en-US.md](README.en-US.md)
+2. Follow the installation steps
+3. Start developing!
 
-```bash
-# Development
-pnpm dev              # Start dev server with debug logging
-pnpm serve           # Alias for dev
+### 中文用户
+1. 前往 [README.zh-CN.md](README.zh-CN.md)
+2. 按照安装步骤操作
+3. 开始开发！
 
-# Building
-pnpm build           # Production build
-pnpm build:staging   # Staging build
-pnpm report          # Build with visualization report
-pnpm preview         # Preview production build
+---
 
-# Code Quality
-pnpm lint            # Run all linters (ESLint, Prettier, Stylelint)
-pnpm lint:eslint     # Run ESLint
-pnpm lint:prettier   # Format code with Prettier
-pnpm lint:stylelint  # Check styles
+## 🤝 Contributing | 贡献
 
-# Type Checking
-pnpm typecheck       # TypeScript type checking
+We welcome contributions! | 欢迎贡献！
 
-# Maintenance
-pnpm clean:cache     # Clear all caches and reinstall dependencies
-```
+- [Contribution Guide | 贡献指南](CONTRIBUTING.md) (Coming Soon | 即将推出)
+- Report bugs | 报告错误: [Issues](https://github.com/Zjomo/TruthLensLive/issues)
+- Suggest features | 建议功能: [Discussions](https://github.com/Zjomo/TruthLensLive/discussions)
 
-## 🔄 Real-Time Rumor Detection
+---
 
-The backend uses a Flask-based system with RSS feed integration:
+## 📞 Support & Help | 支持和帮助
 
-```bash
-# Configuration through environment variables
-export DB_PATH=sqlite:///rumor.db
-export POLL_INTERVAL=60  # seconds
-export MAX_ITEMS_PER_FEED=30
-```
+- 📧 **Issues**: [GitHub Issues](https://github.com/Zjomo/TruthLensLive/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/Zjomo/TruthLensLive/discussions)
+- 📖 **Documentation**: See language-specific READMEs below | 查看下面的语言特定 README
 
-**Key Features:**
-- Automated RSS feed polling
-- Local subscription conversion via RSSHub
-- Heuristic rumor tendency scoring
-- Server-Sent Events for real-time updates
-- Multiple data source support
+---
 
-For detailed backend documentation, see [modules/Index/README.md](modules/Index/README.md)
+## 📜 License | 许可证
 
-## 🔧 Configuration
+This project is licensed under the **Apache License 2.0** | 本项目采用 **Apache License 2.0** 许可证
 
-### Frontend Environment Variables
+See [LICENSE](LICENSE) file for details | 详见 [LICENSE](LICENSE) 文件
 
-Create `.env.local` file:
-```env
-VITE_API_BASE_URL=http://localhost:5000
-VITE_ENABLE_DEBUG=true
-```
+---
 
-### Backend Configuration
+## 👨‍💻 Author | 作者
 
-Supported environment variables:
-- `DB_PATH`: SQLite database connection string
-- `POLL_INTERVAL`: RSS feed polling interval in seconds
-- `MAX_ITEMS_PER_FEED`: Maximum items to fetch per feed
+**[Zjomo](https://github.com/Zjomo)** - Creator & Maintainer | 创建者和维护者
 
-## 📊 Features Overview
+---
 
-### Dashboard
-- Real-time news feed display
-- Rumor detection metrics
-- Source distribution charts
-- Rumor ratio visualization
+## 🔗 Useful Links | 有用的链接
 
-### Admin Panel
-- News source management
-- Feed configuration
-- Detection rule adjustment
-- User management
+### Documentation | 文档
+- [English README | 英文 README](README.en-US.md)
+- [Chinese README | 中文 README](README.zh-CN.md)
+- [Backend Documentation | 后端文档](modules/Index/README.md)
 
-### API
-- RESTful endpoints for news retrieval
-- WebSocket support for real-time updates
-- Rumor scoring endpoints
-- Analytics data export
-
-## 🌐 Internationalization
-
-The application supports multiple languages through i18n:
-- English (en-US)
-- Chinese Simplified (zh-CN)
-
-To add a new language, update the locale files in the `locales/` directory.
-
-## 📄 License
-
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## ⚠️ Important Notes
-
-1. **Educational Purpose**: This project is primarily for learning and research on real-time data processing and AI applications.
-
-2. **Rumor Detection**: The current heuristic-based scoring is for demonstration purposes. For production use, integrate trained ML models with labeled datasets.
-
-3. **RSS Feed Sources**: For domestic (Chinese) users, it's recommended to set up a self-hosted RSSHub instance as the aggregation layer for reliable feed access.
-
-4. **Multi-Instance Deployment**: For production with multiple instances, replace SSE with a message broker (Redis pub/sub) for proper event broadcasting.
-
-## 🐛 Troubleshooting
-
-### Development Server Issues
-```bash
-# Clear cache and reinstall
-pnpm clean:cache
-
-# Check Node version
-node --version  # Should be 18.18.0 or higher
-```
-
-### RSS Feed Connection Issues
-- Verify RSSHub URL is accessible
-- Check internet connectivity
-- Review `FEED_URLS` configuration
-- Monitor polling interval settings
-
-### Port Already in Use
-```bash
-# Change frontend port
-PORT=3000 pnpm dev
-
-# Change backend port
-python -c "import os; os.environ['FLASK_PORT'] = '5001'; exec(open('modules/Index/app.py').read())"
-```
-
-## 📚 Additional Resources
-
-- [Vue 3 Documentation](https://vuejs.org)
-- [Element Plus](https://element-plus.org)
+### Resources | 资源
+- [Vue 3 Docs](https://vuejs.org) / [Vue 3 文档](https://vuejs.org/zh/)
+- [Element Plus](https://element-plus.org) / [Element Plus 中文](https://element-plus.org/zh-CN/)
 - [Flask Documentation](https://flask.palletsprojects.com)
 - [RSSHub Documentation](https://docs.rsshub.app/)
-- [Vite Documentation](https://vitejs.dev)
 
-## 📞 Support
+### Repository | 仓库
+- [GitHub Repository](https://github.com/Zjomo/TruthLensLive)
+- [Issues | 问题](https://github.com/Zjomo/TruthLensLive/issues)
+- [Discussions | 讨论](https://github.com/Zjomo/TruthLensLive/discussions)
 
-For issues, questions, or suggestions:
-1. Check existing [Issues](https://github.com/Zjomo/TruthLensLive/issues)
-2. Create a new issue with detailed information
-3. Include error logs and reproduction steps
+---
+
+<div align="center">
+
+### 🌟 Star Us! | 给我们一个 Star！
+
+If you find this project helpful, please consider giving it a star ⭐
+
+如果您觉得这个项目有帮助，请考虑给它一个 Star ⭐
+
+[⭐ Star on GitHub](https://github.com/Zjomo/TruthLensLive)
+
+</div>
 
 ---
 

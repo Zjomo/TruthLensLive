@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>实时谣言检测系统</title>
+
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      :root {
+        --bg: #ffffff;
+        --text: #111827;           /* slate-900 */
+        --muted: #6b7280;          /* slate-500 */
+        --primary: #ff1744;        /* vivid red */
+        --primary-600: #e01139;
+        --primary-50: #fff1f3;     /* rose-50 */
+        --surface: #ffffff;
+        --card: #ffffff;
+        --border: #eef0f4;
+        --ring: #ffd6dd;
+        --shadow: 0 12px 30px rgba(255, 23, 68, 0.12), 0 4px 10px rgba(17, 24, 39, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+          "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+      }
+
+      a { color: var(--primary); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      header.container, footer.container { padding: 20px; }
+
+      .container { max-width: 1200px; margin: 0 auto; padding: 10px; }
+
+      /* Header */
+      header h1 {
+        margin: 0 0 6px 0;
+        font-size: 28px;
+        letter-spacing: 0.3px;
+      }
+      .subtitle {
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .accent-bar {
+        height: 3px; width: 72px; background: var(--primary);
+        border-radius: 999px; margin-top: 14px;
+        box-shadow: 0 6px 16px rgba(255, 23, 68, 0.4);
+      }
+
+      /* Status bar */
+      #statusbar {
+        margin-top: 14px;
+        display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+        padding: 10px 12px;
+        background: var(--primary-50);
+        border: 1px solid var(--ring);
+        border-radius: 14px;
+      }
+      #statusbar .clock { font-variant-numeric: tabular-nums; font-size: 14px; }
+      #statusbar .clock #clock-time { font-size: 18px; font-weight: 700; margin-left: 8px; }
+      #statusbar .weather { display: flex; gap: 10px; align-items: center; font-size: 14px; }
+      .hide { display: none; }
+
+      /* Grid */
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 16px; margin-top: 10px; }
+      .span-2 { grid-column: span 2; }
+
+      /* Cards */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+        min-height: 260px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card:hover { transform: translateY(-2px); }
+      .card h2 { margin: 0 0 10px 0; font-size: 18px; }
+      .card h2::after {
+        content: "";
+        display: block; width: 36px; height: 3px; background: var(--primary);
+        border-radius: 999px; margin-top: 8px; opacity: 0.8;
+      }
+
+      .card-row { display: flex; gap: 16px; margin-bottom: 20px; }
+      .card-row .card { flex: 1; min-height: 600px; }
+      .card-row .span-2 { flex: 2; }
+
+      .chart-box { position: relative; height: 320px; width: 100%; }
+      .fixed-height { height: 560px; }
+      canvas { display: block; width: 100%; height: 100%; }
+
+      /* Feed */
+      #feed { display: flex; flex-direction: column; gap: 12px; max-height: 560px; overflow-y: auto; padding-right: 6px; }
+      .item {
+        padding: 12px 12px;
+        border-radius: 12px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        position: relative;
+      }
+      .item::before {
+        content: ""; position: absolute; inset: 0 0 0 0; border-radius: 12px; pointer-events: none;
+        box-shadow: inset 0 0 0 1px rgba(255, 23, 68, 0.04);
+      }
+      .item.fake { background: #fff7f8; border-left: 4px solid var(--primary); }
+      .item.real { background: #fafafa; border-left: 4px solid #e5e7eb; }
+      .item .meta { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+      /* Form controls */
+      textarea {
+        width: 100%; padding: 10px 12px; font-size: 14px;
+        border-radius: 10px; resize: vertical; min-height: 68px; max-height: 240px;
+        border: 1px solid var(--border); outline: none; background: #fff;
+      }
+      textarea:focus { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+      .btn {
+        margin-top: 8px; padding: 8px 14px; font-size: 13px; border-radius: 10px; border: none; cursor: pointer;
+        background: var(--primary); color: #fff; font-weight: 600;
+        box-shadow: 0 6px 18px rgba(255, 23, 68, 0.2);
+      }
+      .btn:hover { background: var(--primary-600); }
+
+      /* iframe */
+      #firstPage { width: 100%; height: 100%; border: 0; background: #fff; }
+
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+        .span-2 { grid-column: span 1; }
+        .card-row { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container">
+      <h1>实时谣言检测系统</h1>
+      <p class="subtitle">基于 Flask + RSS 实时拉取新闻，动态检测虚假新闻</p>
+      <div class="accent-bar"></div>
+
+      <div id="statusbar">
+        <div class="clock">
+          <span id="clock-date">--/-- --</span>
+          <span id="clock-time">--:--:--</span>
+        </div>
+        <div class="weather" id="weather">
+          <span id="weather-loading">正在定位并获取天气...</span>
+          <span class="hide" id="weather-content">
+            <span id="weather-location"></span>
+            <span id="weather-temp"></span>
+            <span id="weather-desc"></span>
+            <span id="weather-wind"></span>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card-row">
+        <section class="card span-2">
+          <h2>实时推送</h2>
+          <div id="feed"></div>
+        </section>
+        <section class="card">
+          <h2>新闻预览</h2>
+          <div class="chart-box fixed-height">
+            <iframe id="firstPage" sandbox="allow-scripts allow-same-origin" title="first news page" referrerpolicy="no-referrer"></iframe>
+          </div>
+          <div class="item" id="firstPageMeta" style="margin-top:10px;"></div>
+        </section>
+      </div>
+
+      <div class="grid" style="margin-top: 20px;">
+        <section class="card span-2">
+          <h2 style="margin-bottom:8px; font-size:16px;">🧠 新闻内容检测</h2>
+          <textarea id="newsInput" rows="2" placeholder="请输入新闻文本..."></textarea>
+          <button class="btn" onclick="checkNews()">🔍 检测</button>
+          <div id="newsResult" style="margin-top:8px; font-size:14px;"></div>
+        </section>
+
+        <section class="card">
+          <h2>虚假新闻概览</h2>
+          <div id="fakeStats">加载中...</div>
+        </section>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>过去7天：谣言趋势</h2>
+          <div class="chart-box">
+            <canvas id="lineChart"></canvas>
+          </div>
+        </section>
+        <section class="card">
+          <h2>来源分布</h2>
+          <div class="chart-box">
+            <canvas id="barChart"></canvas>
+          </div>
+        </section>
+        <section class="card">
+          <h2>谣言占比</h2>
+          <div class="chart-box">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="container">
+      <small style="display:block;text-align:center;">© 2025 实时虚假新闻检测系统 | 科技赋能 · 竞赛品味</small>
+    </footer>
+
+    <script>
+      // 概览统计
+      fetch('/api/stats').then(r=>r.json()).then(data=>{
+        const statsDiv = document.getElementById('fakeStats');
+        statsDiv.innerHTML = `
+          虚假新闻：${data.fake_vs_real.fake} 条<br/>
+          真实新闻：${data.fake_vs_real.real} 条<br/>
+          待判断：${data.fake_vs_real.unknown || 0} 条
+        `;
+      });
+
+      // 自定义文本检测
+      function checkNews() {
+        const text = document.getElementById("newsInput").value.trim();
+        const resultDiv = document.getElementById("newsResult");
+        resultDiv.textContent = "正在检测，请稍候...";
+        if (!text) { resultDiv.textContent = "请输入新闻内容。"; return; }
+        fetch("/api/verify_news", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { resultDiv.textContent = "错误：" + data.error; }
+          else {
+            resultDiv.innerHTML = `检测结果：<strong>${data.label}</strong><br/>置信度：${(data.score * 100).toFixed(2)}%`;
+          }
+        })
+        .catch(()=>{ resultDiv.textContent = "请求失败，请稍后再试。"; });
+      }
+
+      // 工具函数
+      function $(sel){ return document.querySelector(sel); }
+      function el(tag, cls){ const e = document.createElement(tag); if(cls) e.className = cls; return e; }
+
+      // 渲染一条新闻（白红风：虚假条目以浅红底高亮）
+      function renderItem(item){
+        const div = el('div','item');
+        if (typeof item.is_fake === 'boolean') div.classList.add(item.is_fake ? 'fake' : 'real');
+        const a = el('a'); a.href = item.link; a.target = '_blank'; a.textContent = item.title || '(无标题)';
+        const meta = el('div','meta');
+        const dt = item.published ? new Date(item.published) : new Date();
+        meta.textContent = `${item.source || '未知来源'} · ${dt.toLocaleString()}`;
+        if (typeof item.is_fake === 'boolean' && typeof item.fake_news_score === 'number') {
+          const label = item.is_fake ? '⚠️虚假' : '✅真实';
+          const prob = item.fake_news_score;
+          meta.textContent += ` · BERT检测：${label} (${(prob * 100).toFixed(1)}%)`;
+        }
+        div.appendChild(a); div.appendChild(meta); return div;
+      }
+
+      // 初始化：加载最近新闻
+      fetch('/api/news?limit=50').then(r=>r.json()).then(list=>{
+        const feed = $('#feed');
+        list.forEach(item=>feed.appendChild(renderItem(item)));
+      });
+
+      // SSE 实时流
+      (function(){
+        const es = new EventSource('/stream');
+        es.onmessage = (evt)=>{
+          try{
+            const data = JSON.parse(evt.data);
+            if(data.type === 'news'){
+              const feed = $('#feed');
+              feed.prepend(renderItem(data.payload));
+            }
+          }catch(e){console.error(e);}
+        };
+      })();
+
+      let lineChart, barChart, pieChart;
+
+      function refreshCharts(){
+        fetch('/api/stats').then(r=>r.json()).then(data=>{
+          const lc = document.getElementById('lineChart');
+          const bc = document.getElementById('barChart');
+          const pc = document.getElementById('pieChart');
+
+          [lc, bc, pc].forEach(cv => {
+            const parent = cv.parentElement;
+            const h = parent.clientHeight; const w = parent.clientWidth;
+            if (cv.height !== h) cv.height = h; if (cv.width !== w) cv.width = w;
+          });
+
+          const commonOpts = {
+            responsive: true, maintainAspectRatio: false, animation: false, resizeDelay: 150,
+            plugins: { legend: { labels: { color: '#111827' } } },
+            scales: {
+              x: { ticks: { color: '#6b7280' }, grid: { color: '#f1f5f9' } },
+              y: { ticks: { color: '#6b7280' }, grid: { color: '#f1f5f9' }, beginAtZero: true }
+            }
+          };
+
+          const ctxLine = lc.getContext('2d');
+          const ctxBar  = bc.getContext('2d');
+          const ctxPie  = pc.getContext('2d');
+
+          const lineCfg = {
+            type: 'line',
+            data: {
+              labels: data.series.labels,
+              datasets: [
+                {
+                  label: '谣言', data: data.series.rumor,
+                  borderColor: 'rgba(255, 23, 68, 1)', backgroundColor: 'rgba(255, 23, 68, 0.15)',
+                  tension: 0.35, fill: true, pointRadius: 2
+                },
+                {
+                  label: '非谣言', data: data.series.not_rumor,
+                  borderColor: 'rgba(30, 41, 59, 1)', backgroundColor: 'rgba(30, 41, 59, 0.08)',
+                  tension: 0.35, fill: true, pointRadius: 2
+                }
+              ]
+            },
+            options: commonOpts
+          };
+
+          const barCfg = {
+            type: 'bar',
+            data: {
+              labels: Object.keys(data.by_source),
+              datasets: [{ label: '数量', data: Object.values(data.by_source),
+                backgroundColor: 'rgba(255, 23, 68, 0.75)', borderColor: 'rgba(255, 23, 68, 1)', borderWidth: 1.5 }]
+            },
+            options: commonOpts
+          };
+
+          const pieCfg = {
+            type: 'pie',
+            data: {
+              labels: ['谣言', '非谣言'],
+              datasets: [{ data: [data.rumor_vs_not.rumor, data.rumor_vs_not.not_rumor],
+                backgroundColor: ['rgba(255, 23, 68, 0.9)', 'rgba(229, 231, 235, 1)'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, animation: false }
+          };
+
+          if(lineChart) lineChart.destroy();
+          if(barChart)  barChart.destroy();
+          if(pieChart)  pieChart.destroy();
+
+          lineChart = new Chart(ctxLine, lineCfg);
+          barChart  = new Chart(ctxBar,  barCfg);
+          pieChart  = new Chart(ctxPie,  pieCfg);
+        });
+      }
+
+      function safeRefresh(){ if (document.visibilityState === 'visible') refreshCharts(); }
+      safeRefresh(); setInterval(safeRefresh, 60000);
+
+      // ============== 实时时钟 ==============
+      (function startClock(){
+        const elDate = document.getElementById('clock-date');
+        const elTime = document.getElementById('clock-time');
+        if(!elDate || !elTime) return;
+        const tick = ()=>{
+          const now = new Date();
+          const dateStr = now.toLocaleDateString(undefined, { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });
+          const timeStr = now.toLocaleTimeString(undefined, { hour12:false });
+          elDate.textContent = dateStr; elTime.textContent = timeStr;
+        };
+        tick(); setInterval(tick, 1000);
+      })();
+
+      // ============== 本地天气（Open-Meteo） ==============
+      (function initWeather(){
+        const elLoading = document.getElementById('weather-loading');
+        const elContent = document.getElementById('weather-content');
+        const elLoc = document.getElementById('weather-location');
+        const elTemp = document.getElementById('weather-temp');
+        const elDesc = document.getElementById('weather-desc');
+        const elWind = document.getElementById('weather-wind');
+        if(!elLoading || !elContent) return;
+        const codeMap = { 0:'晴',1:'少云',2:'多云',3:'阴',45:'雾',48:'雾',51:'毛毛雨',53:'小雨',55:'中雨',56:'冻毛毛雨',57:'冻小雨',61:'小雨',63:'中雨',65:'大雨',66:'冻雨',67:'冻雨',71:'小雪',73:'中雪',75:'大雪',77:'阵雪',80:'阵雨',81:'阵雨',82:'暴阵雨',85:'阵雪',86:'暴阵雪',95:'雷阵雨',96:'雷阵雨伴冰雹',99:'强雷暴伴冰雹' };
+        function show(data, placeText){
+          const cw = data.current_weather; if(!cw){ throw new Error('no current_weather'); }
+          elLoc.textContent = placeText ? `📍 ${placeText}` : '';
+          elTemp.textContent = `🌡️ ${cw.temperature}°C`;
+          elDesc.textContent = `· ${codeMap[cw.weathercode] || '未知天气'}`;
+          elWind.textContent = `· 风速 ${cw.windspeed} km/h`;
+          elLoading.classList.add('hide'); elContent.classList.remove('hide');
+        }
+        async function fetchOpenMeteo(lat, lon){
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+          const r = await fetch(url); if(!r.ok) throw new Error('weather http error'); return r.json();
+        }
+        async function reverseGeocode(lat, lon){
+          try{
+            const u = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=zh&format=json`;
+            const r = await fetch(u); if(!r.ok) return null; const j = await r.json();
+            const hit = (j && j.results && j.results[0]) || null; if(!hit) return null;
+            return hit.city || hit.name || [hit.country, hit.admin1, hit.admin2].filter(Boolean).join(' · ');
+          }catch{ return null; }
+        }
+        const lat = 34.3416, lon = 108.9398; // 西安
+        Promise.all([fetchOpenMeteo(lat, lon), reverseGeocode(lat, lon)])
+          .then(([w, place])=>show(w, place || '西安'))
+          .catch(()=>{ elLoading.textContent = '天气服务暂不可用'; });
+        setInterval(()=>{ initWeather._once || (initWeather._once = true); location.reload(); }, 10 * 60 * 1000);
+      })();
+
+      // 第一条新闻原页预览（通过 srcdoc 嵌入）
+      fetch('/api/first_news_page')
+        .then(r => r.json())
+        .then(data => {
+          const iframe = document.getElementById('firstPage');
+          const meta = document.getElementById('firstPageMeta');
+          if (!iframe) return;
+          if (data && data.html) {
+            iframe.srcdoc = data.html;
+            if (meta) {
+              const a = document.createElement('a'); a.href = data.link; a.target = '_blank'; a.textContent = data.title || '（无标题）';
+              meta.innerHTML = ''; meta.appendChild(a);
+              const span = document.createElement('span'); span.className = 'meta'; span.style.marginLeft = '8px'; span.textContent = '（在新窗口打开原文）'; meta.appendChild(span);
+            }
+          } else { if (meta) meta.textContent = '暂时没有可预览的新闻。'; }
+        })
+        .catch(() => { const meta = document.getElementById('firstPageMeta'); if (meta) meta.textContent = '加载失败，请稍后重试。'; });
+    </script>
+  </body>
+</html>

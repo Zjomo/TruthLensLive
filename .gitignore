@@ -6,6 +6,4 @@ node_modules/
 .idea/
 build/
 .vscode/
-modules/ClashLinux/
-modules/Index/
 modules/MultiFakeDetect/

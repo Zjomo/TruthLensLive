@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VideoAIClip · 推理前端</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+      :root {
+        --primary-red: #ff3b30;
+        --primary-red-dark: #d70015;
+        --accent-blue: #007aff;
+        --accent-yellow: #ffcc00;
+        --neutral-light: #f5f5f7;
+        --neutral-dark: #1d1d1f;
+      }
+
+      body {
+        font-family: 'Rajdhani', sans-serif;
+        background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+      }
+
+      .tech-border {
+        border: 1px solid rgba(255, 59, 48, 0.2);
+        box-shadow: 0 4px 12px rgba(255, 59, 48, 0.08),
+                    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      }
+
+      .tech-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 59, 48, 0.15);
+        box-shadow: 0 8px 24px rgba(255, 59, 48, 0.1),
+                    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+      }
+
+      .pulse-red {
+        animation: pulse-red 2s infinite;
+      }
+
+      @keyframes pulse-red {
+        0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+      }
+
+      .gradient-red {
+        background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-red-dark) 100%);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-red-dark) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .logo-tech {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo-tech::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0));
+        transform: rotate(30deg);
+      }
+
+      .cyber-button {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+
+      .cyber-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: all 0.5s;
+      }
+
+      .cyber-button:hover::before {
+        left: 100%;
+      }
+
+      .progress-bar {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 30%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: progress-shine 2s infinite;
+      }
+
+      @keyframes progress-shine {
+        0% { left: -30%; }
+        100% { left: 100%; }
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Orbitron', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Shell -->
+    <div class="min-h-screen flex flex-col">
+      <!-- Header -->
+      <header class="bg-white/90 backdrop-blur-md border-b border-red-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl gradient-red logo-tech shadow-lg"></div>
+            <div>
+              <h1 class="text-2xl font-bold gradient-text tracking-tight">TruthLensLive</h1>
+              <p class="text-xs text-gray-500">基于情绪特征与图层特征的虚假新闻视频检测平台</p>
+            </div>
+          </div>
+          <nav class="hidden sm:flex items-center gap-4 text-sm">
+            <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 font-medium">多模态检测</span>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Main -->
+      <main class="flex-1 max-w-6xl mx-auto px-6 py-8">
+        <!-- Symmetric Two-Column Top Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Left: Upload & Settings Card -->
+          <form id="form" class="tech-card rounded-xl p-6 space-y-5">
+            <h2 class="text-lg font-semibold text-red-700 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              新闻内容
+            </h2>
+
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">视频文件 (.mp4)</label>
+              <input id="video" name="file" type="file" accept="video/mp4" required
+                     class="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-red-600 file:text-white hover:file:bg-red-700 cyber-button" />
+            </div>
+
+            <div class="mt-2">
+              <label class="block text-sm font-medium mb-1 text-gray-700">在线视频链接</label>
+              <input id="videoUrl" type="url" placeholder="例如：https://youtu.be/xxxx 或 https://example.com/video.m3u8"
+                     class="w-full border border-red-100 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              <button id="urlSubmitBtn" type="button"
+                      class="mt-2 px-4 py-2 rounded-lg gradient-red text-white text-sm shadow hover:opacity-90 cyber-button">
+                在线导入
+              </button>
+              <p class="text-xs text-gray-500 mt-1">
+                仅在合规授权范围内使用下载能力；遵循平台条款。
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-700">新闻文本 / 描述</label>
+              <textarea id="text" name="news_text" rows="4"
+                        class="w-full border border-red-100 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                        required></textarea>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-3">
+              <div class="flex flex-col gap-1">
+                <label class="text-sm text-gray-700">设备</label>
+                <select name="device" class="border border-red-100 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                  <option value="0" selected>GPU 0</option>
+                  <option value="cpu">CPU</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-sm text-gray-700">batch_size</label>
+                <input name="batch_size" type="number" min="1" value="1"
+                       class="border border-red-100 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-sm text-gray-700">ckpt 目录</label>
+                <input name="inference_ckp" type="text" value="./provided_ckp/FakingRecipe_fakesv"
+                       class="border border-red-100 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 pt-2">
+              <button id="extractBtn" type="button"
+                      class="px-4 py-2 rounded-lg gradient-red text-white text-sm shadow hover:opacity-90 cyber-button pulse-red">
+                特征提取
+              </button>
+              <button id="inferBtn" type="button"
+                      class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 text-sm shadow cyber-button" disabled>
+                模型推理
+              </button>
+            </div>
+          </form>
+
+          <!-- Right: Preview & Status Card -->
+          <section class="tech-card rounded-xl p-6 space-y-5">
+            <div>
+              <h2 class="text-lg font-semibold text-red-700 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                视频预览
+              </h2>
+              <video id="videoPlayer" class="w-full mt-3 rounded-lg aspect-video bg-black tech-border" controls></video>
+            </div>
+
+            <section id="statusWrap" class="hidden">
+              <div class="flex items-center justify-center gap-2 text-sm text-red-600 font-medium">
+                <svg class="animate-spin h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span id="status">正在处理…</span>
+              </div>
+            </section>
+
+            <!-- Symmetric quick tips row -->
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700">
+                <span class="font-semibold">✓</span> 确保视频包含清晰人声
+              </div>
+              <div class="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700">
+                <span class="font-semibold">✓</span> 文本尽量简洁、客观
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Symmetric Bottom Results Section -->
+        <section id="result" class="mt-8 hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 文本情绪 -->
+            <div class="tech-card rounded-xl p-6">
+              <h3 class="text-base font-semibold text-red-700 mb-3 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                文本情绪检测 Top‑5
+              </h3>
+              <ul id="labels" class="space-y-3"></ul>
+            </div>
+
+            <!-- 音频情绪 -->
+            <div class="tech-card rounded-xl p-6">
+              <h3 class="text-base font-semibold text-red-700 mb-3 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+                音频情绪检测 Top‑5
+              </h3>
+              <div id="audio" class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-red-100 rounded-lg overflow-hidden">
+                  <thead class="bg-red-50">
+                    <tr>
+                      <th class="px-4 py-2 border-b border-red-100 text-red-700 font-semibold">情绪</th>
+                      <th class="px-4 py-2 border-b border-red-100 text-red-700 font-semibold">概率</th>
+                    </tr>
+                  </thead>
+                  <tbody id="audioBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 结果文件 -->
+            <div class="tech-card rounded-xl p-6 lg:col-span-2">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-base font-semibold text-red-700 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  导出结果
+                </h3>
+              </div>
+              <ul id="files" class="text-sm list-disc list-inside text-red-700"></ul>
+            </div>
+
+            <!-- 新闻身份卡（居中对称） -->
+            <div class="lg:col-span-2">
+              <div id="newsCard" class="hidden mx-auto max-w-3xl tech-border rounded-xl p-6 bg-white">
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-bold gradient-text flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    新闻身份卡
+                  </h2>
+                  <span id="verdictBadge" class="text-sm px-3 py-1 rounded-full font-medium"></span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div class="flex flex-col"><strong class="text-red-700">视频 ID:</strong> <span id="vidText" class="text-gray-700">-</span></div>
+                  <div class="flex flex-col"><strong class="text-red-700">预测概率:</strong> <span id="predProb" class="text-gray-700">-</span></div>
+                  <div class="flex flex-col"><strong class="text-red-700">文本主情绪:</strong> <span id="mainTextEmo" class="text-gray-700">-</span></div>
+                  <div class="flex flex-col"><strong class="text-red-700">音频主情绪:</strong> <span id="mainAudioEmo" class="text-gray-700">-</span></div>
+                  <div class="flex flex-col"><strong class="text-red-700">检测时间:</strong> <span id="tsHuman" class="text-gray-700">-</span></div>
+                  <div class="flex flex-col"><strong class="text-red-700">结果文件:</strong> <a id="csvLink" href="#" class="text-red-600 hover:underline" target="_blank">下载 CSV</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="mt-10 border-t border-red-100 pt-6 pb-8">
+        <div class="max-w-6xl mx-auto px-6 text-center text-xs text-gray-500">
+          <div class="flex items-center justify-center gap-1 mb-1">
+            <span class="h-2 w-2 rounded-full bg-red-500"></span>
+            <span class="h-2 w-2 rounded-full bg-red-400"></span>
+            <span class="h-2 w-2 rounded-full bg-red-300"></span>
+          </div>
+          © 2025 VideoAIClip · AI视频内容分析竞赛平台
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // JavaScript代码保持不变，与原始代码完全相同
+      const form = document.getElementById('form');
+      const videoInput = document.getElementById('video');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const extractBtn = document.getElementById('extractBtn');
+      const inferBtn = document.getElementById('inferBtn');
+      const statusWrap = document.getElementById('statusWrap');
+      const statusEl = document.getElementById('status');
+      const result = document.getElementById('result');
+      const labels = document.getElementById('labels');
+      const audioBody = document.getElementById('audioBody');
+      const files = document.getElementById('files');
+      const urlSubmitBtn = document.getElementById('urlSubmitBtn');
+      const videoUrlInput = document.getElementById('videoUrl');
+
+      let currentTS = null;
+      let hasExtracted = false;
+      let hasInferred = false;
+
+      videoInput.addEventListener('change', () => {
+        const file = videoInput.files[0];
+        if (file) {
+          const videoURL = URL.createObjectURL(file);
+          videoPlayer.src = videoURL;
+          videoPlayer.load();
+        }
+      });
+
+      extractBtn.addEventListener('click', async () => {
+        hasExtracted = false;
+        hasInferred = false;
+        document.getElementById('newsCard').classList.add('hidden');
+
+        result.classList.add('hidden');
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在提取特征…';
+        extractBtn.disabled = true;
+
+        const fd = new FormData(form);
+        try {
+          const resp = await fetch('/api/extract_features', { method: 'POST', body: fd });
+          const data = await resp.json();
+          currentTS = data.ts;
+
+          renderFeatures(data);
+          inferBtn.disabled = false;
+          result.classList.remove('hidden');
+          statusWrap.classList.add('hidden');
+          hasExtracted = true;
+        } catch (err) {
+          statusEl.textContent = '特征提取出错：' + (err?.message || err);
+        } finally {
+          extractBtn.disabled = false;
+        }
+      });
+
+      inferBtn.addEventListener('click', async () => {
+        inferBtn.disabled = true;
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在推理…';
+
+        const fd = new FormData();
+        fd.append('ts', currentTS);
+        fd.append('device', form.device.value);
+        fd.append('inference_ckp', form.inference_ckp.value);
+        fd.append('batch_size', form.batch_size.value);
+
+        try {
+          const resp = await fetch('/api/infer', { method: 'POST', body: fd });
+          const data = await resp.json();
+          renderResults(data);
+        } catch (err) {
+          statusEl.textContent = '推理出错：' + (err?.message || err);
+        } finally {
+          inferBtn.disabled = false;
+        }
+      });
+
+      // 导入视频,手动实现 特征提取 + 模型推理
+      urlSubmitBtn?.addEventListener('click', async () => {
+        const videoUrl = (videoUrlInput?.value || '').trim();
+        if (!videoUrl) return alert('请输入有效的视频链接');
+
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在导入在线视频…';
+
+        const fd = new FormData();
+        fd.append('video_url', videoUrl);
+
+        try {
+          const resp = await fetch('/api/import_url', { method: 'POST', body: fd });
+          const data = await resp.json();
+
+          if (data.video_url) {
+            videoPlayer.src = data.video_url;
+            videoPlayer.muted = true;
+            try { await videoPlayer.play(); } catch { videoPlayer.load(); }
+          }
+
+          currentTS = data.ts;
+          // 提示用户接下来要点"特征提取"
+          statusEl.textContent = '视频导入完成，请点击【特征提取】';
+        } catch (err) {
+          statusEl.textContent = '导入失败：' + (err?.message || err);
+        }
+      });
+
+      function renderFeatures(data) {
+        // 文本情绪
+        labels.innerHTML = '';
+        const topk = data.text_topk_labels || [];
+        topk.forEach(item => {
+          let label, score;
+          if (Array.isArray(item)) {
+            label = item[0];
+            score = parseFloat(item[1]);
+          } else {
+            return;
+          }
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="flex items-center justify-between text-sm font-medium text-gray-800 mb-1">
+              <span>${label}</span>
+              <span>${(score * 100).toFixed(2)}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 progress-bar">
+              <div class="bg-red-600 h-2.5 rounded-full" style="width: ${(score * 100).toFixed(2)}%"></div>
+            </div>
+          `;
+          labels.appendChild(li);
+        });
+
+        // 音频情绪
+        const audioData = data.audio_emo_cls || [];
+        audioBody.innerHTML = '';
+        const sortedTop5 = audioData
+          .map(i => ({ emotion: i.Emotion, score: parseFloat(i.Score?.replace('%', '')) || 0 }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 5);
+        const maxScore = sortedTop5[0]?.score ?? 0;
+        sortedTop5.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.className = item.score === maxScore ? 'bg-red-50 font-semibold' : '';
+          tr.innerHTML = `
+            <td class="px-4 py-2 border-b border-red-100">${item.emotion}</td>
+            <td class="px-4 py-2 border-b border-red-100">${item.score.toFixed(1)}%</td>
+          `;
+          audioBody.appendChild(tr);
+        });
+
+        result.classList.remove('hidden');
+      }
+
+      function renderResults(data) {
+        const dl = data.downloads || {};
+        files.innerHTML = '';
+        if (dl.predictions_csv) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = dl.predictions_csv; a.target = '_blank'; a.rel = 'noopener';
+          a.className = 'text-red-600 hover:underline';
+          a.textContent = '下载预测 CSV';
+          li.appendChild(a);
+          files.appendChild(li);
+        }
+
+        const verdictBadge = document.getElementById('verdictBadge');
+        const mainTextEmo = document.getElementById('mainTextEmo');
+        const mainAudioEmo = document.getElementById('mainAudioEmo');
+        const vidText = document.getElementById('vidText');
+        const predProb = document.getElementById('predProb');
+        const tsHuman = document.getElementById('tsHuman');
+        const csvLink = document.getElementById('csvLink');
+
+        const clsInfo = data.classification || {};
+        const textTop = (data.text_topk_labels || [])[0];
+        const audioTop = (data.audio_emo_cls || [])
+          .map(i => ({ e: i.Emotion, s: parseFloat(i.Score?.replace('%', '')) || 0 }))
+          .sort((a, b) => b.s - a.s)[0];
+
+        verdictBadge.textContent = clsInfo.pred === 1 ? '❌ 判定为假新闻' : '✅ 判定为真实';
+        verdictBadge.className = 'text-sm px-3 py-1 rounded-full font-medium ' +
+          (clsInfo.pred === 1 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700');
+
+        mainTextEmo.textContent = Array.isArray(textTop) ? `${textTop[0]} (${(textTop[1] * 100).toFixed(1)}%)` : '-';
+        mainAudioEmo.textContent = audioTop ? `${audioTop.e} (${audioTop.s.toFixed(1)}%)` : '-';
+
+        vidText.textContent = clsInfo.vid ?? '-';
+        predProb.textContent = (clsInfo.pred_prob * 100).toFixed(1) + '%';
+        tsHuman.textContent = new Date(data.ts * 1000).toLocaleString();
+        csvLink.href = data.downloads?.predictions_csv || '#';
+
+        hasInferred = true;
+        if (hasExtracted || data.fromUrl === true) {
+          document.getElementById('newsCard').classList.remove('hidden');
+        }
+
+        result.classList.remove('hidden');
+        statusWrap.classList.add('hidden');
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VideoAIClip · 推理前端</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <!-- Shell -->
+    <div class="min-h-screen">
+      <!-- Header -->
+      <header class="bg-white/70 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow"></div>
+            <div>
+              <h1 class="text-2xl font-bold tracking-tight">VideoAIClip</h1>
+              <p class="text-xs text-gray-500">上传 MP4 + 文本，进行特征提取与模型推理</p>
+            </div>
+          </div>
+          <nav class="hidden sm:flex items-center gap-4 text-sm text-gray-600">
+            <span class="px-3 py-1 rounded-full bg-gray-100">v2.0</span>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Main -->
+      <main class="max-w-6xl mx-auto px-6 py-8">
+        <!-- Symmetric Two-Column Top Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Left: Upload & Settings Card -->
+          <form id="form" class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-5">
+            <h2 class="text-lg font-semibold">上传与参数</h2>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">视频文件 (.mp4)</label>
+              <input id="video" name="file" type="file" accept="video/mp4" required class="block w-full text-sm file:mr-4 file:py-2 file:px-3 file:rounded-xl file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700" />
+            </div>
+
+            <!-- 在“视频文件 (.mp4)”那一段下方添加： -->
+            <div class="mt-2">
+              <label class="block text-sm font-medium mb-1">在线视频链接（支持 YouTube / 直链 .mp4 / .m3u8）</label>
+              <input id="videoUrl" type="url" placeholder="例如：https://youtu.be/xxxx 或 https://example.com/video.m3u8"
+                     class="w-full border rounded-xl p-3 text-sm" />
+              <button id="urlSubmitBtn" type="button"
+                      class="mt-2 px-4 py-2 rounded-2xl bg-purple-600 text-white text-sm shadow hover:bg-purple-700">
+                通过链接导入视频
+              </button>
+              <p class="text-xs text-gray-500 mt-1">
+                仅在合规授权范围内使用下载能力；遵循平台条款（例如 YouTube 通常不允许未授权下载）。</p>
+            </div>
+
+
+
+            <div>
+              <label class="block text-sm font-medium mb-1">新闻文本 / 描述</label>
+              <textarea id="text" name="news_text" rows="4" class="w-full border rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-3">
+              <div class="flex items-center gap-2">
+                <label class="text-sm">设备</label>
+                <select name="device" class="border rounded-xl p-2 text-sm w-full">
+                  <option value="0" selected>GPU 0</option>
+                  <option value="cpu">CPU</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-sm">batch_size</label>
+                <input name="batch_size" type="number" min="1" value="1" class="border rounded-xl p-2 text-sm w-full" />
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-sm">ckpt 目录</label>
+                <input name="inference_ckp" type="text" value="./provided_ckp/FakingRecipe_fakesv" class="border rounded-xl p-2 text-sm w-full" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 pt-2">
+              <button id="extractBtn" type="button" class="px-4 py-2 rounded-2xl bg-blue-600 text-white text-sm shadow hover:bg-blue-700">特征提取</button>
+              <button id="inferBtn" type="button" class="px-4 py-2 rounded-2xl bg-green-600 text-white text-sm shadow disabled:opacity-50" disabled>模型推理</button>
+            </div>
+          </form>
+
+          <!-- Right: Preview & Status Card -->
+          <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-5">
+            <div>
+              <h2 class="text-lg font-semibold">视频预览</h2>
+              <video id="videoPlayer" class="w-full mt-3 rounded-xl aspect-video bg-black" controls></video>
+            </div>
+
+            <section id="statusWrap" class="hidden">
+              <div class="flex items-center justify-center gap-2 text-sm text-gray-600">
+                <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                <span id="status">正在处理…</span>
+              </div>
+            </section>
+
+            <!-- Symmetric quick tips row -->
+            <div class="grid grid-cols-2 gap-3 text-xs text-gray-500">
+              <div class="p-3 rounded-xl bg-gray-50 border">确保视频包含清晰人声</div>
+              <div class="p-3 rounded-xl bg-gray-50 border">文本尽量简洁、客观</div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Symmetric Bottom Results Section -->
+        <section id="result" class="mt-8 hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 文本情绪 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h3 class="text-base font-semibold mb-3">文本情绪检测 Top‑5</h3>
+              <ul id="labels" class="space-y-3"></ul>
+            </div>
+
+            <!-- 音频情绪 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h3 class="text-base font-semibold mb-3">音频情绪检测 Top‑5</h3>
+              <div id="audio" class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-gray-200 rounded-xl">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="px-4 py-2 border">情绪</th>
+                      <th class="px-4 py-2 border">概率</th>
+                    </tr>
+                  </thead>
+                  <tbody id="audioBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 结果文件 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:col-span-2">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-base font-semibold">导出</h3>
+              </div>
+              <ul id="files" class="text-sm list-disc list-inside"></ul>
+            </div>
+
+            <!-- 新闻身份卡（居中对称） -->
+            <div class="lg:col-span-2">
+              <div id="newsCard" class="hidden mx-auto max-w-3xl border rounded-2xl p-6 shadow bg-white">
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-bold">🪪 新闻身份卡</h2>
+                  <span id="verdictBadge" class="text-sm px-3 py-1 rounded-full font-medium"></span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div><strong>视频 ID:</strong> <span id="vidText">-</span></div>
+                  <div><strong>预测概率:</strong> <span id="predProb">-</span></div>
+                  <div><strong>文本主情绪:</strong> <span id="mainTextEmo">-</span></div>
+                  <div><strong>音频主情绪:</strong> <span id="mainAudioEmo">-</span></div>
+                  <div><strong>检测时间:</strong> <span id="tsHuman">-</span></div>
+                  <div><strong>结果文件:</strong> <a id="csvLink" href="#" class="text-blue-600 hover:underline" target="_blank">下载 CSV</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="mt-10 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-6 text-center text-xs text-gray-500">© 2025 VideoAIClip</div>
+      </footer>
+    </div>
+
+    <script>
+      const form = document.getElementById('form');
+      const videoInput = document.getElementById('video');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const extractBtn = document.getElementById('extractBtn');
+      const inferBtn = document.getElementById('inferBtn');
+      const statusWrap = document.getElementById('statusWrap');
+      const statusEl = document.getElementById('status');
+      const result = document.getElementById('result');
+      const labels = document.getElementById('labels');
+      const audioBody = document.getElementById('audioBody');
+      const files = document.getElementById('files');
+      const urlSubmitBtn = document.getElementById('urlSubmitBtn');
+      const videoUrlInput = document.getElementById('videoUrl');
+
+      let currentTS = null;
+      let hasExtracted = false;
+      let hasInferred = false;
+
+      videoInput.addEventListener('change', () => {
+        const file = videoInput.files[0];
+        if (file) {
+          const videoURL = URL.createObjectURL(file);
+          videoPlayer.src = videoURL;
+          videoPlayer.load();
+        }
+      });
+
+      extractBtn.addEventListener('click', async () => {
+        hasExtracted = false;
+        hasInferred = false;
+        document.getElementById('newsCard').classList.add('hidden');
+
+        result.classList.add('hidden');
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在提取特征…';
+        extractBtn.disabled = true;
+
+        const fd = new FormData(form);
+        try {
+          const resp = await fetch('/api/extract_features', { method: 'POST', body: fd });
+          const data = await resp.json();
+          currentTS = data.ts;
+
+          renderFeatures(data);
+          inferBtn.disabled = false;
+          result.classList.remove('hidden');
+          statusWrap.classList.add('hidden');
+          hasExtracted = true;
+        } catch (err) {
+          statusEl.textContent = '特征提取出错：' + (err?.message || err);
+        } finally {
+          extractBtn.disabled = false;
+        }
+      });
+
+      inferBtn.addEventListener('click', async () => {
+        inferBtn.disabled = true;
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在推理…';
+
+        const fd = new FormData();
+        fd.append('ts', currentTS);
+        fd.append('device', form.device.value);
+        fd.append('inference_ckp', form.inference_ckp.value);
+        fd.append('batch_size', form.batch_size.value);
+
+        try {
+          const resp = await fetch('/api/infer', { method: 'POST', body: fd });
+          const data = await resp.json();
+          renderResults(data);
+        } catch (err) {
+          statusEl.textContent = '推理出错：' + (err?.message || err);
+        } finally {
+          inferBtn.disabled = false;
+        }
+      });
+
+      // 导入视频,手动实现 特征提取 + 模型推理
+      urlSubmitBtn?.addEventListener('click', async () => {
+        const videoUrl = (videoUrlInput?.value || '').trim();
+        if (!videoUrl) return alert('请输入有效的视频链接');
+
+        statusWrap.classList.remove('hidden');
+        statusEl.textContent = '正在导入在线视频…';
+
+        const fd = new FormData();
+        fd.append('video_url', videoUrl);
+
+        try {
+          const resp = await fetch('/api/import_url', { method: 'POST', body: fd });
+          const data = await resp.json();
+
+          if (data.video_url) {
+            videoPlayer.src = data.video_url;
+            videoPlayer.muted = true;
+            try { await videoPlayer.play(); } catch { videoPlayer.load(); }
+          }
+
+          currentTS = data.ts;
+          // 提示用户接下来要点“特征提取”
+          statusEl.textContent = '视频导入完成，请点击【特征提取】';
+        } catch (err) {
+          statusEl.textContent = '导入失败：' + (err?.message || err);
+        }
+      });
+
+
+
+      function renderFeatures(data) {
+        // 文本情绪
+        labels.innerHTML = '';
+        const topk = data.text_topk_labels || [];
+        topk.forEach(item => {
+          let label, score;
+          if (Array.isArray(item)) {
+            label = item[0];
+            score = parseFloat(item[1]);
+          } else {
+            return;
+          }
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="flex items-center justify-between text-sm font-medium text-gray-800 mb-1">
+              <span>${label}</span>
+              <span>${(score * 100).toFixed(2)}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${(score * 100).toFixed(2)}%"></div>
+            </div>
+          `;
+          labels.appendChild(li);
+        });
+
+        // 音频情绪
+        const audioData = data.audio_emo_cls || [];
+        audioBody.innerHTML = '';
+        const sortedTop5 = audioData
+          .map(i => ({ emotion: i.Emotion, score: parseFloat(i.Score?.replace('%', '')) || 0 }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 5);
+        const maxScore = sortedTop5[0]?.score ?? 0;
+        sortedTop5.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.className = item.score === maxScore ? 'bg-yellow-50 font-semibold' : '';
+          tr.innerHTML = `
+            <td class="px-4 py-2 border">${item.emotion}</td>
+            <td class="px-4 py-2 border">${item.score.toFixed(1)}%</td>
+          `;
+          audioBody.appendChild(tr);
+        });
+
+        result.classList.remove('hidden');
+      }
+
+      function renderResults(data) {
+        const dl = data.downloads || {};
+        files.innerHTML = '';
+        if (dl.predictions_csv) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = dl.predictions_csv; a.target = '_blank'; a.rel = 'noopener';
+          a.className = 'text-blue-600 hover:underline';
+          a.textContent = '下载预测 CSV';
+          li.appendChild(a);
+          files.appendChild(li);
+        }
+
+        const verdictBadge = document.getElementById('verdictBadge');
+        const mainTextEmo = document.getElementById('mainTextEmo');
+        const mainAudioEmo = document.getElementById('mainAudioEmo');
+        const vidText = document.getElementById('vidText');
+        const predProb = document.getElementById('predProb');
+        const tsHuman = document.getElementById('tsHuman');
+        const csvLink = document.getElementById('csvLink');
+
+        const clsInfo = data.classification || {};
+        const textTop = (data.text_topk_labels || [])[0];
+        const audioTop = (data.audio_emo_cls || [])
+          .map(i => ({ e: i.Emotion, s: parseFloat(i.Score?.replace('%', '')) || 0 }))
+          .sort((a, b) => b.s - a.s)[0];
+
+        verdictBadge.textContent = clsInfo.pred === 1 ? '❌ 判定为假新闻' : '✅ 判定为真实';
+        verdictBadge.className = 'text-sm px-3 py-1 rounded-full font-medium ' +
+          (clsInfo.pred === 1 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700');
+
+        mainTextEmo.textContent = Array.isArray(textTop) ? `${textTop[0]} (${(textTop[1] * 100).toFixed(1)}%)` : '-';
+        mainAudioEmo.textContent = audioTop ? `${audioTop.e} (${audioTop.s.toFixed(1)}%)` : '-';
+
+        vidText.textContent = clsInfo.vid ?? '-';
+        predProb.textContent = (clsInfo.pred_prob * 100).toFixed(1) + '%';
+        tsHuman.textContent = new Date(data.ts * 1000).toLocaleString();
+        csvLink.href = data.downloads?.predictions_csv || '#';
+
+        hasInferred = true;
+        if (hasExtracted || data.fromUrl === true) {
+          document.getElementById('newsCard').classList.remove('hidden');
+        }
+
+        result.classList.remove('hidden');
+        statusWrap.classList.add('hidden');
+      }
+
+    </script>
+  </body>
+</html>

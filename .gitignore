@@ -5,7 +5,13 @@ node_modules/
 *.pt
 *.safetensors
 *.mp4
+*.ot
+*.h5
+*.msgpack
+*.onnx
+fnn_embeddings.csv
+FakingRecipe_fakesv
+FakingRecipe_fakett
 .idea/
 build/
 .vscode/
-modules/MultiFakeDetect/

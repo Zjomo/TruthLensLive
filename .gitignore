@@ -1,0 +1,10 @@
+node_modules/
+*.bin
+*.pyc
+.idea/
+build/
+.vscode/
+modules/ClashLinux/
+modules/
+
+

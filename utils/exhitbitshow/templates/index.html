@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>竹编文化馆展品展示系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.0/swiper-bundle.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff, #3f9be8);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 1rem 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            position: relative;
+            border-bottom: 2px solid #0077cc;
+            box-shadow: 0 15px 50px rgba(0, 119, 204, 0.2);
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            margin: 1rem 0;
+            text-shadow: 0 0 12px rgba(0, 119, 204, 0.8);
+            color: #0077cc;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            color: #555;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            padding: 0 1rem;
+        }
+
+        /* 搜索框 */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .search-bar {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            box-shadow: 0 4px 20px rgba(0, 119, 204, 0.3);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 2rem;
+            background-color: #f4f4f4;
+            font-size: 1.1rem;
+            color: #333;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            background-color: #fff;
+            box-shadow: inset 0 0 0 2px #0077cc;
+        }
+
+        .search-bar button {
+            background-color: #0077cc;
+            color: #fff;
+            width: 3rem;
+            height: 3rem;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar button:hover {
+            background-color: #005fa3;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .museum-container {
+            flex: 1;
+            width: 100%;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .swiper-slide {
+            position: relative;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .swiper-slide-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .swiper-slide:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .exhibit-image {
+            flex: 1 1 50%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .exhibit-image img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .exhibit-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .exhibit-content {
+            flex: 1 1 50%;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .exhibit-content h2 {
+            color: #0077cc;
+            margin-bottom: 1rem;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 600;
+            border-bottom: 2px solid #0077cc;
+            padding-bottom: 0.5rem;
+        }
+
+        .exhibit-content p {
+            line-height: 1.8;
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #0077cc;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .counter {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 153, 204, 0.2);
+            color: #0077cc;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 2rem;
+            color: #0077cc;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #0077cc;
+            background: rgba(255, 255, 255, 0.8);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.1);
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 1.2rem;
+        }
+
+        .swiper-pagination-bullet {
+            background: #0077cc;
+            opacity: 0.5;
+            width: 12px;
+            height: 12px;
+            transition: all 0.3s;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* 响应式布局 */
+        @media (min-width: 992px) {
+            .swiper-slide {
+                flex-direction: row;
+            }
+
+            .exhibit-image {
+                margin-right: 1.5rem;
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 1rem 2rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .swiper {
+                height: 80vh;
+                min-height: 400px;
+            }
+
+            .exhibit-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .swiper {
+                height: 85vh;
+                min-height: 350px;
+            }
+
+            .counter {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-landmark"></i>
+        </div>
+        <h1>文化馆藏品展示系统</h1>
+        <p>探索历史印记，感受文化传承，文化馆展示系统为您呈现珍贵文物与历史资料。</p>
+
+        <!-- 搜索框 -->
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="搜索展品...">
+                <button aria-label="搜索"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="museum-container">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for exhibit in exhibits %}
+                    <div class="swiper-slide">
+                        <div class="counter">展品 {{ loop.index }}/{{ loop.length }}</div>
+                        <div class="swiper-slide-content">
+                            <div class="exhibit-image">
+                                <img src="{{ url_for('download_image', filename=exhibit.image_url) }}" alt="{{ exhibit.exhibit_name }}" loading="lazy">
+                            </div>
+                            <div class="exhibit-content">
+                                <h2>{{ exhibit.exhibit_name }}</h2>
+                                <p>{{ exhibit.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 竹编文化馆展品展示系统 | 技术支持：信科智造团队</p>
+    </footer>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/Swiper/11.0.0/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const swiper = new Swiper('.swiper', {
+                direction: 'horizontal',
+                loop: true,
+                speed: 800,
+                autoplay: {
+                    delay: 8000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    dynamicBullets: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                effect: 'slide',
+                grabCursor: true,
+                keyboard: {
+                    enabled: true,
+                    onlyInViewport: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                    },
+                    992: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    }
+                }
+            });
+
+            // 图片懒加载和悬停效果
+            const lazyImages = document.querySelectorAll('.exhibit-image img[loading="lazy"]');
+
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.getAttribute('src');
+                            img.removeAttribute('loading');
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+
+                lazyImages.forEach(img => imageObserver.observe(img));
+            }
+        });
+    </script>
+</body>
+</html>

@@ -11,12 +11,86 @@ A comprehensive full-stack application for real-time rumor detection and news ve
 
 - **Real-Time News Feed**: Live streaming of news updates using Server-Sent Events (SSE)
 - **Rumor Detection**: AI-powered heuristic scoring system to identify potentially misleading content
+- **RAG + Multimodal Fusion**: Text / image / audio / video detection with evidence-chain explanations
 - **Multi-Source Aggregation**: RSS feed integration with automatic subscription conversion
 - **Interactive Dashboards**: Visual analytics with charts and statistics
 - **Admin Panel**: Comprehensive management interface with Element Plus UI
 - **Multi-Language Support**: Internationalization support for global users
 - **Responsive Design**: Mobile-friendly interface with Tailwind CSS
 - **Docker Support**: Containerized deployment for easy scaling
+
+## 🎬 Demo Showcase
+
+### RAG Real-time Fake News Detection
+
+Input a news headline and content; the system returns a credibility score, BERT detection result, AI analysis and a downloadable full log in seconds.
+
+![RAG detection UI](docs/images/rag-detect-ui.png)
+
+### Multimodal Video Detection
+
+End-to-end pipeline from "news video + text" to "classification result, text emotion and audio emotion", with light / dark themes.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/multimodal-input-light.jpeg" alt="Multimodal detection - input (light)"/></td>
+    <td width="50%"><img src="docs/images/multimodal-video-dark.jpeg" alt="Multimodal detection - video processing (dark)"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/images/multimodal-result.jpeg" alt="Multimodal detection - results & analysis"/></td>
+  </tr>
+</table>
+
+### Detection Case Examples
+
+Real-world multimodal fake-news samples used in evaluation (video + multilingual captions):
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/example-video-zh.png" alt="Case: staged breaking-news video"/></td>
+    <td width="50%"><img src="docs/images/example-video-multilingual.png" alt="Case: multilingual edited video"/></td>
+  </tr>
+</table>
+
+### Project Demo Video
+
+Full system walkthrough (screen recording, ~91 MB, in-repo path):
+
+> 🎥 [`Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4`](Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4)
+>
+> 💡 Tip: GitHub renders large videos poorly. Upload to GitHub Releases / Bilibili / YouTube and replace with an online playback link.
+
+## 🏗️ Model Architecture & Performance
+
+### FakingRecipe Multimodal Framework
+
+Material selection-aware + editing-aware modeling over audio, title/transcript and key frames.
+
+<table>
+  <tr>
+    <td width="60%"><img src="docs/images/architecture-fakingrecipe.png" alt="FakingRecipe framework"/></td>
+    <td width="40%"><img src="docs/images/llm-label-propagation.png" alt="LLM label propagation"/></td>
+  </tr>
+</table>
+
+### Benchmark Results
+
+EQ-Former / EQFFG-Trans reach state-of-the-art F1 on both Weibo and Tweet datasets.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-multimodal.png" alt="Weibo multimodal sentiment fusion"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-multimodal.png" alt="Tweet multimodal sentiment fusion"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-fuzzy-transformer.png" alt="Weibo fuzzy Transformer"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-fuzzy-transformer.png" alt="Tweet fuzzy Transformer"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/radar-weibo-fuzzy-transformer.png" alt="Weibo radar chart"/></td>
+    <td width="50%"><img src="docs/images/radar-tweet-fuzzy-transformer.png" alt="Tweet radar chart"/></td>
+  </tr>
+</table>
 
 ## 🏗️ Tech Stack
 

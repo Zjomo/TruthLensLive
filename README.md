@@ -31,6 +31,7 @@ A comprehensive full-stack application for real-time rumor detection and news ve
 **TruthLensLive** is a real-time rumor detection system that combines:
 - 📡 **Real-time Data Streaming**: RSS feed aggregation with live updates
 - 🤖 **AI-Powered Analysis**: Heuristic scoring for rumor detection
+- 🧠 **RAG + Multimodal Fusion**: Text / image / audio / video detection with evidence-chain explanations
 - 📊 **Visual Analytics**: Interactive dashboards and charts
 - 🌍 **Multi-language Support**: English and Chinese interfaces
 - 🐳 **Cloud-Ready**: Docker support for easy deployment
@@ -38,9 +39,94 @@ A comprehensive full-stack application for real-time rumor detection and news ve
 **TruthLensLive** 是一个实时谣言检测系统，结合：
 - 📡 **实时数据流**：RSS 源聚合和实时更新
 - 🤖 **AI 驱动分析**：用于谣言检测的启发式评分
+- 🧠 **RAG + 多模态融合**：文本 / 图像 / 音频 / 视频检测，生成"证据链"式解释
 - 📊 **可视化分析**：交互式仪表板和图表
 - 🌍 **多语言支持**：英文和中文界面
 - 🐳 **云就绪**：支持 Docker 快速部署
+
+---
+
+## 🎬 Demo Showcase | 系统案例演示
+
+### 📰 RAG Real-time Fake News Detection | 基于 RAG 的实时虚假新闻检测
+
+Input news headline and content, the system returns a credibility score, BERT detection result, AI analysis and a downloadable full log in seconds.
+输入新闻标题与正文，系统秒级返回可信度评分、BERT 检测结果、AI 分析说明与完整日志下载。
+
+![RAG 实时虚假新闻检测界面](docs/images/rag-detect-ui.png)
+
+### 🎞️ Multimodal Video Detection | 多模态视频检测
+
+End-to-end pipeline from "news video + text" to "classification result, text emotion and audio emotion", with light / dark themes.
+从"新闻视频 + 文本"到"分类结果、文本情绪与音频情绪"的端到端流程，支持深色 / 浅色主题。
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/multimodal-input-light.jpeg" alt="多模态检测-输入界面（浅色）"/></td>
+    <td width="50%"><img src="docs/images/multimodal-video-dark.jpeg" alt="多模态检测-视频处理界面（深色）"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/images/multimodal-result.jpeg" alt="多模态检测-结果与分析界面"/></td>
+  </tr>
+</table>
+
+### 📹 Project Demo Video | 项目演示视频
+
+Full system walkthrough (screen recording, ~91 MB):
+完整系统演示录屏（约 91 MB，仓库内路径）：
+
+> 🎥 [`Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4`](Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4)
+>
+> 💡 GitHub renders large videos poorly — for online playback, upload to GitHub Releases / Bilibili / YouTube and replace the link above.
+> 提示：GitHub 对大视频渲染支持有限，建议上传至 Releases / B站 / YouTube 后替换为在线播放链接。
+
+### 🧪 Detection Case Examples | 检测案例示例
+
+Real-world multimodal fake-news samples used in evaluation (video + multilingual captions):
+评测中使用的真实多模态虚假新闻样例（视频 + 多语言字幕）：
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/example-video-zh.png" alt="案例：突发事件剪辑视频"/></td>
+    <td width="50%"><img src="docs/images/example-video-multilingual.png" alt="案例：多语言场景剪辑视频"/></td>
+  </tr>
+</table>
+
+---
+
+## 🏗️ Model Architecture & Performance | 模型架构与性能
+
+### FakingRecipe Multimodal Framework | 多模态融合框架
+
+Material selection-aware + editing-aware modeling over audio, title/transcript and key frames.
+面向音频、标题/转录与关键帧的"素材选取感知 + 素材编辑感知"建模。
+
+<table>
+  <tr>
+    <td width="60%"><img src="docs/images/architecture-fakingrecipe.png" alt="FakingRecipe 多模态框架"/></td>
+    <td width="40%"><img src="docs/images/llm-label-propagation.png" alt="LLM 标签传播集成"/></td>
+  </tr>
+</table>
+
+### Benchmark Results | 基准测试结果
+
+EQ-Former / EQFFG-Trans reach state-of-the-art F1 on both Weibo and Tweet datasets.
+EQ-Former / EQFFG-Trans 在 Weibo 与 Tweet 数据集上均达到 SOTA F1。
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-multimodal.png" alt="Weibo 多图文情感融合模型"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-multimodal.png" alt="Tweet 多图文情感融合模型"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-fuzzy-transformer.png" alt="Weibo 模糊图 Transformer"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-fuzzy-transformer.png" alt="Tweet 模糊图 Transformer"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/radar-weibo-fuzzy-transformer.png" alt="Weibo 雷达图"/></td>
+    <td width="50%"><img src="docs/images/radar-tweet-fuzzy-transformer.png" alt="Tweet 雷达图"/></td>
+  </tr>
+</table>
 
 ---
 
@@ -72,8 +158,11 @@ A comprehensive full-stack application for real-time rumor detection and news ve
 ├── 📄 README.md (This file - 当前文件)
 ├── 📄 README.en-US.md (English - 英文)
 ├── 📄 README.zh-CN.md (中文简体)
+├── 📂 docs/images/ (System screenshots & benchmark charts - 系统截图与性能图表)
+├── 📂 Material/ (Project video, PPT & docs - 项目视频、PPT 与文档)
 ├── 📂 modules/
-│   ├── 📄 Index/README.md (Backend Docs - 后端文档)
+│   ├── 📄 RagDetect/ (RAG text detection - RAG 文本检测)
+│   ├── 📄 MultiFakeDetect/ (Multimodal video detection - 多模态视频检测)
 │   └── 📄 ClashLinux/README.md (Linux Proxy - Linux 代理)
 └── 📚 Additional Resources (其他资源)
 ```

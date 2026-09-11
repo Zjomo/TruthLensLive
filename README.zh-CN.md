@@ -11,6 +11,7 @@
 
 - **实时新闻源**：使用 Server-Sent Events (SSE) 实现新闻更新的实时流传输
 - **谣言检测**：基于 AI 的启发式评分系统，用于识别潜在的误导性内容
+- **RAG + 多模态融合**：融合文本语义、视觉对象、音频情绪与传播时序特征，检索生成"证据链"式解释
 - **多源聚合**：RSS 源集成和自动订阅转换
 - **交互式仪表板**：具有图表和统计数据的可视化分析
 - **管理面板**：采用 Element Plus UI 的综合管理界面
@@ -18,7 +19,80 @@
 - **响应式设计**：使用 Tailwind CSS 的移动友好界面
 - **Docker 支持**：容器化部署，便于扩展
 
-## 🏗️ 技术栈
+## 🎬 系统案例展示
+
+### 基于 RAG 的实时虚假新闻检测
+
+输入新闻标题与正文，系统秒级返回可信度评分、BERT 检测结果、AI 分析说明与完整日志下载。
+
+![RAG 实时虚假新闻检测界面](docs/images/rag-detect-ui.png)
+
+### 多模态视频检测
+
+从"新闻视频 + 文本"到"分类结果、文本情绪与音频情绪"的端到端检测流程，支持深色 / 浅色主题。
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/multimodal-input-light.jpeg" alt="多模态检测-输入界面（浅色）"/></td>
+    <td width="50%"><img src="docs/images/multimodal-video-dark.jpeg" alt="多模态检测-视频处理界面（深色）"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/images/multimodal-result.jpeg" alt="多模态检测-结果与分析界面"/></td>
+  </tr>
+</table>
+
+### 检测案例示例
+
+评测中使用的真实多模态虚假新闻样例（视频 + 多语言字幕）：
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/example-video-zh.png" alt="案例：突发事件剪辑视频"/></td>
+    <td width="50%"><img src="docs/images/example-video-multilingual.png" alt="案例：多语言场景剪辑视频"/></td>
+  </tr>
+</table>
+
+### 项目演示视频
+
+完整系统演示录屏（约 91 MB，仓库内路径）：
+
+> 🎥 [`Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4`](Material/我的刀盾_TruthLensLive—基于RAG-多模态融合的虚假新闻实时检测系统_项目视频.mp4)
+>
+> 💡 提示：GitHub 对大视频在线渲染支持有限，建议上传至 Releases / B站 / YouTube 后替换为在线播放链接。
+
+## 🏗️ 模型架构与性能
+
+### 多模态融合框架
+
+面向音频、标题/转录与关键帧的"素材选取感知 + 素材编辑感知"建模：
+
+<table>
+  <tr>
+    <td width="60%"><img src="docs/images/architecture-fakingrecipe.png" alt="FakingRecipe 多模态框架"/></td>
+    <td width="40%"><img src="docs/images/llm-label-propagation.png" alt="LLM 标签传播集成"/></td>
+  </tr>
+</table>
+
+### 基准测试结果
+
+EQ-Former / EQFFG-Trans 在 Weibo 与 Tweet 数据集上均达到 SOTA F1：
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-multimodal.png" alt="Weibo 多图文情感融合模型"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-multimodal.png" alt="Tweet 多图文情感融合模型"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/metrics-weibo-fuzzy-transformer.png" alt="Weibo 模糊图 Transformer"/></td>
+    <td width="50%"><img src="docs/images/metrics-tweet-fuzzy-transformer.png" alt="Tweet 模糊图 Transformer"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/radar-weibo-fuzzy-transformer.png" alt="Weibo 雷达图"/></td>
+    <td width="50%"><img src="docs/images/radar-tweet-fuzzy-transformer.png" alt="Tweet 雷达图"/></td>
+  </tr>
+</table>
+
+## 🛠️ 技术栈
 
 ### 前端 (49.5% Vue)
 - **Vue 3**：现代响应式 UI 框架
